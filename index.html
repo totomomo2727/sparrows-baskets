@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Potta+One&family=Yuji+Syuku&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Yuji+Mai&family=Henny+Penny&family=Griffy&family=Yuji+Syuku&display=swap">
 <style>
 /* Layout: one screen, and the screen is a drawing of a small town and the bamboo woods behind it, done in ink
    and gouache on paper. It opens with a prologue told one inked line at a time. Lines wobble and overshoot,
@@ -26,7 +26,9 @@
   --tomoshi:#f0a24a;   /* lantern light, the only accent */
   --moss:#9ab04a;      /* the curse */
   --f-hand:"Gaegu","Klee One","Hiragino Maru Gothic ProN","Yu Gothic","Noto Sans CJK JP",cursive,sans-serif;
-  --f-pop:"Potta One","Gaegu","Hiragino Maru Gothic ProN",sans-serif;
+  --f-pop:"Yuji Mai","Gaegu","Hiragino Maru Gothic ProN",serif;
+  --f-cap:"Henny Penny","Yuji Mai",serif;
+  --f-or:"Griffy","Gaegu",cursive;
   --f-brush:"Yuji Syuku","Hiragino Mincho ProN","Yu Mincho","Noto Serif CJK JP",serif;
   --rough:255px 18px 225px 16px / 16px 225px 18px 255px;
   color-scheme:dark;
@@ -51,11 +53,17 @@ canvas{display:block}
 .cover .name{margin:0;font-family:var(--f-pop);font-weight:400;font-size:clamp(3rem,1.8rem + 6vw,6.6rem);line-height:1.02;color:#fff4e4;letter-spacing:.01em;text-shadow:0 .04em 0 rgba(0,0,0,.35)}
 .cover .name .wd{display:inline-block;white-space:nowrap}
 .cover .name{display:grid;justify-items:center}
+.cover .name .cap{font-family:var(--f-cap);font-size:1.32em;line-height:.8;margin-right:-.04em;vertical-align:-.04em;color:#ffb35c}
+.cover .name .tsu .cap{color:#ff9a3c;font-size:1.3em;rotate:-6deg;display:inline-block}
+.cover .name .swap .treat .cap{color:inherit}
+.cover .name .or{font-family:var(--f-or);font-size:.62em;color:#f6a85a;rotate:-10deg;translate:0 -.35em;margin-left:.12em}
 .cover .name .l1{display:block}
-.swap{position:relative;display:block;height:1.5em;width:100%}
+.swap{position:relative;display:block;height:1.62em;width:100%}
+.swap .tsu{display:flex;flex-direction:column;align-items:center}
+.swap .tsu .kana{font-family:var(--f-brush);font-size:.24em;color:var(--tomoshi);letter-spacing:.5em;margin:.25em 0 0 .5em;text-shadow:none;line-height:1}
 .swap .treat{position:absolute;left:50%;top:0;translate:-50% 0;white-space:nowrap}
 .swap.go .treat{animation:correct .9s .75s cubic-bezier(.5,0,.3,1) both}
-@keyframes correct{to{transform:translate(-62%,-.62em) rotate(-8deg) scale(.42);opacity:.55;color:var(--pencil)}}
+@keyframes correct{to{transform:translate(-84%,-.5em) rotate(-8deg) scale(.42);opacity:.55;color:var(--pencil)}}
 .swap .scrib{position:absolute;left:-6%;top:28%;width:112%;height:60%;overflow:visible;pointer-events:none}
 .swap .scrib path{fill:none;stroke:var(--tomoshi);stroke-width:7;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420}
 .swap.go .scrib path{animation:scribble .7s ease-out forwards}
@@ -1007,11 +1015,11 @@ const LINES = [
 const STICK = [['wr',-22,4,-12],['mk',94,0,10],['hc',-26,46,8],['du',98,44,-8],['cp',-16,86,-6],['sq',92,86,6],['km',-2,-22,-6],['pd',80,-24,5]];
 const narrow = innerWidth < 640;
 $('stickers').innerHTML = STICK.map(([id,x,y,r],i,arr,ox=0,oy=0) => (x = narrow ? Math.min(80,Math.max(-2,x)) : x, y = narrow ? (y < 40 ? y - 6 : y + 8) : y, ox = (x < 50 ? -1 : 1)*260, oy = (y < 40 ? -1 : 1)*200, `<div class="sticker in" style="left:${x}%;top:${y}%;rotate:${r}deg;--fx:${ox}px;--fy:${oy}px;--d:${(.5+i*.12).toFixed(2)}s">${candySVG(byId[id])}</div>`)).join('');
-{ let d = .1; const drop = w => [...w].map(c => `<span class="ch" style="--d:${(d += .07).toFixed(2)}s">${c}</span>`).join('');
+{ let d = .1; const drop = w => [...w].map(c => `<span class="ch${/[A-Z]/.test(c)?' cap':''}" style="--d:${(d += .07).toFixed(2)}s">${c}</span>`).join('');
   const l1 = drop('Trick'); d += .1; const l1b = drop('or'); d += .1; const tr = drop('Treat');
-  $('name').innerHTML = `<span class="l1"><span class="wd">${l1}</span> <span class="wd">${l1b}</span></span>
+  $('name').innerHTML = `<span class="l1"><span class="wd">${l1}</span> <span class="wd or">${l1b}</span></span>
     <span class="swap"><span class="treat"><span class="wd">${tr}</span><svg class="scrib" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true"><path d="M6 34 C60 10 90 54 150 28 S240 8 294 30 M20 48 C90 26 200 52 280 22"/></svg></span>
-    <span class="tsu"><ruby>Tsuzura<rt>つづら</rt></ruby></span></span>`; }
+    <span class="tsu"><span><span class="cap">T</span>suzura</span><span class="kana">つづら</span></span></span>`; }
 { const sw=document.querySelector('.swap'); let done=false;
   const run = () => { sw.classList.remove('go'); void sw.offsetWidth; sw.classList.add('go'); setTimeout(scratch, 20); setTimeout(() => chirp(), 1300); };
   const crossOut = () => { if(done) return; done=true; run(); };
