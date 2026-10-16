@@ -929,8 +929,8 @@ for(let i=0;i<160;i++){ const x=rnd(80,WW-80), y=rnd(40,TOWN_Y-20); if(distToPat
 const fireflies = Array.from({length:70}, () => ({x:rnd(150,WW-150), y:rnd(80,TOWN_Y-60), p:R()*9, r:rnd(30,80)}));
 const pondFlies = Array.from({length:18}, () => ({x:POND.x+rnd(0,POND.w), y:POND.y+rnd(0,POND.h), p:R()*9, r:rnd(20,50)}));
 const laneLanterns = []; for(let x=1000; x<1590; x+=50) laneLanterns.push({x, obake: Math.abs(x-1300) < 25});
-const jizo = Array.from({length:6}, (_,i) => ({x:712+i*25, y:1668+(i%2)*3}));
-const lilies = []; for(let i=0;i<9;i++) lilies.push({x:706+i*16+rnd(-3,3), y:rnd(1684,1694)});
+const jizo = Array.from({length:6}, (_,i) => ({x:700+i*36, y:1668+(i%2)*4}));
+const lilies = []; for(let i=0;i<12;i++) lilies.push({x:690+i*19+rnd(-3,3), y:rnd(1684,1696)});
 const SEGS = [{x0:850,y0:1080,x1:850,y1:2340},{x0:930,y0:1080,x1:930,y1:2340},{x0:280,y0:1730,x1:1520,y1:1730},{x0:280,y0:1775,x1:1520,y1:1775},
   {x0:990,y0:1380,x1:1580,y1:1380},{x0:700,y0:1150,x1:1080,y1:1150},{x0:340,y0:2165,x1:1400,y1:2165},{x0:345,y0:1820,x1:345,y1:2200}];
 const TYPES = ['p','p','p','umb','umb','fox','tanuki','kasa','ghost'];
@@ -1268,21 +1268,14 @@ function tanukiDrum(){ const x=560, y=240, b=reduce?0:Math.abs(Math.sin(t*6))*2;
   if(Math.sin(t*6)>.6){ line(x+16,y-20,x+24,y-24,1.4,'#f2ebde'); line(x-16,y-20,x-24,y-24,1.4,'#f2ebde'); } }
 function firefly(f,ox=0,oy=0){ const x=f.x+Math.sin(t*.5+f.p)*f.r, y=f.y+Math.cos(t*.37+f.p*1.3)*f.r*.6, on=(Math.sin(t*2+f.p*3)+1)/2; if(fogAt(x,y)>200) return;
   softGlow(x,y,14,.5*on,'210,255,140'); blob(x,y,1.6,`rgba(230,255,170,${.4+.6*on})`,null); }
-function jizoFig(j,i){   // drawn with clean, round strokes so the little faces read
-  const x=j.x, y=j.y, c=ctx; RAWCOL=true; c.save(); c.translate(x,y); c.scale(1.25,1.25); c.lineJoin='round'; c.lineCap='round';
-  const ink=()=>{ c.strokeStyle='#1f1d1b'; c.lineWidth=1.8; c.stroke(); };
-  c.fillStyle='rgba(0,0,0,.12)'; c.beginPath(); c.ellipse(1,1,12,3,0,0,7); c.fill();
-  c.fillStyle='#c9c4bc'; c.beginPath(); c.moveTo(-10,0); c.quadraticCurveTo(-11,-16,-6,-21); c.lineTo(6,-21); c.quadraticCurveTo(11,-16,10,0); c.closePath(); c.fill(); ink();
-  c.fillStyle='#e0533f'; c.beginPath(); c.moveTo(-7,-20); c.lineTo(7,-20); c.quadraticCurveTo(5,-11,0,-9); c.quadraticCurveTo(-5,-11,-7,-20); c.closePath(); c.fill(); ink();
-  c.fillStyle='#d6d1c9'; c.beginPath(); c.arc(0,-27,7.5,0,7); c.fill(); ink();
-  c.lineWidth=1.5; c.beginPath(); c.arc(-3,-27,1.6,Math.PI*.1,Math.PI*.9); c.moveTo(4.6,-27); c.arc(3,-27,1.6,Math.PI*.1,Math.PI*.9); c.stroke();
-  c.fillStyle='rgba(230,110,120,.45)'; c.beginPath(); c.arc(-5,-24.5,1.6,0,7); c.arc(5,-24.5,1.6,0,7); c.fill();
-  c.beginPath(); c.arc(0,-24.5,1.4,Math.PI*.15,Math.PI*.85); c.stroke();
-  c.fillStyle='#f4c943'; c.beginPath(); c.moveTo(-14,-32); c.quadraticCurveTo(0,-46,14,-32); c.quadraticCurveTo(0,-30,-14,-32); c.closePath(); c.fill(); ink();
-  c.beginPath(); c.moveTo(0,-41); c.lineTo(0,-43.5); c.stroke();
-  if(i===2){ c.lineWidth=1.4; c.beginPath(); c.moveTo(14,2); c.lineTo(26,-14); c.strokeStyle='#a8704a'; c.stroke();
-    [['#f2f0ea',16,-1],['#d76a97',20,-6],['#7cb35a',24,-11]].forEach(([col,dx,dy]) => { c.fillStyle=col; c.beginPath(); c.arc(dx,dy,3.4,0,7); c.fill(); ink(); }); }
-  c.restore(); RAWCOL=false;
+function jizoFig(j,i){   // same loose pen + crayon as the town, just big enough to read
+  const x=j.x, y=j.y;
+  poly([[x-16,y],[x-15,y-24],[x-9,y-34],[x+9,y-34],[x+15,y-24],[x+16,y]], '#b8b8b8', INK, 1.8);   // stone robe
+  poly([[x-11,y-33],[x+11,y-33],[x+6,y-19],[x-6,y-19]], '#e0533f', INK, 1.6);                     // red bib
+  blob(x,y-44,11,'#c4c4c4',INK,1.6,10);                                                            // round head
+  blob(x-4,y-45,1.7,INK,null); blob(x+4,y-45,1.7,INK,null);                                        // dot eyes
+  poly([[x-22,y-52],[x,y-68],[x+22,y-52]], '#f4c943', INK, 1.8);                                  // straw hat
+  if(i===2){ line(x+20,y+2,x+34,y-20,1.6); [['#f2f0ea',-2],['#d76a97',-9],['#7cb35a',-16]].forEach(([c,dy],k) => blob(x+23+k*4,y+dy,4.5,c,INK,1.4)); }
 }
 function lily(l){   // red spider lily: thin stem, a burst of curled red petals
   const x=l.x, y=l.y;
