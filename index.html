@@ -69,6 +69,11 @@ canvas{display:block}
 .cover .name .or{position:relative;color:#f6ecd8;text-shadow:none}
 
 .cover .name .or .burst{position:absolute;left:50%;top:50%;width:2.1em;height:2.1em;translate:-50% -50%;z-index:-1;background:#b8322a;border-radius:.16em;box-shadow:inset 0 0 0 .1em #b8322a,inset 0 0 0 .15em rgba(246,236,216,.75);filter:url(#rough);opacity:.95}
+.cover .name .or{display:inline-block;transform-origin:50% 50%;animation:stamp .55s 1.05s cubic-bezier(.2,1.4,.4,1) both,sway 6s 1.8s ease-in-out infinite}
+.cover .name .or:hover{animation:stamp .55s cubic-bezier(.2,1.4,.4,1) both,spin360 .9s cubic-bezier(.3,.1,.2,1)}
+@keyframes stamp{0%{transform:scale(2.6) rotate(-30deg);opacity:0}55%{transform:scale(.92) rotate(4deg);opacity:1}100%{transform:none;opacity:1}}
+@keyframes sway{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
+@keyframes spin360{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .swap .tsu .kana b{display:inline-block;font-weight:400;background:#7fd0c4;color:#1d1b24;padding:.12em .2em .12em .7em;rotate:-2deg;letter-spacing:.5em}
 .cover .kicker span{background:linear-gradient(transparent 12%,rgba(246,169,201,.9) 12%,rgba(246,169,201,.9) 88%,transparent 88%);color:#1d1b24;padding:0 .4em;box-decoration-break:clone}
 
@@ -197,7 +202,7 @@ canvas{display:block}
 .titlecard .btn{animation:fade 1s 2.3s both}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 #cursorSparrow{position:fixed;left:0;top:0;width:58px;z-index:25;pointer-events:none;transition:opacity .6s}
-#cursorSparrow .wing{transform-origin:40% 60%;transform-box:fill-box}
+#cursorSparrow .wing{transform-origin:30% 70%;transform-box:fill-box}
 #cursorSparrow.flap .wing{animation:flap .16s linear infinite alternate}
 @keyframes flap{from{transform:rotate(18deg)}to{transform:rotate(-30deg)}}
 
@@ -391,10 +396,11 @@ legend{padding:0;margin:0 0 1rem;font-size:clamp(1.25rem,1.1rem + .8vw,1.7rem);f
   <p class="nudge" id="nudge" hidden><i></i><span id="nudgeText">Click to continue</span></p>
 </section>
 <div class="walkhint" id="walkhint" hidden><i></i><span id="walkText">Click anywhere to walk</span></div>
-<svg id="cursorSparrow" class="rough" viewBox="0 0 60 44" aria-hidden="true"><g stroke="#241b17" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-  <path d="M14 26 L2 30 L4 34 L16 30Z" fill="#5a3424"/><ellipse cx="26" cy="26" rx="15" ry="11" fill="#9a5e3a"/><ellipse cx="29" cy="30" rx="10" ry="6" fill="#efdcc2" stroke="none"/>
-  <path class="wing" d="M14 22 Q24 8 36 18 Q28 26 14 22Z" fill="#7e4a2a"/><circle cx="40" cy="18" r="9" fill="#7e4026"/><ellipse cx="42" cy="22" rx="6" ry="4" fill="#f6efff" stroke="none"/>
-  <path d="M48 17 L56 19 L48 21Z" fill="#241b17"/></g><circle cx="43" cy="15.5" r="2" fill="#241b17"/></svg>
+<svg id="cursorSparrow" class="rough" viewBox="0 0 60 44" aria-hidden="true"><g stroke="#241b17" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M18 26 L3 19 L4.5 23.5 L17 30Z" fill="#5e3a26"/><path d="M16 27 C17 18 27 13 35 13 C38 7.5 45 6 49.5 9.5 C51.5 11 52.6 13 52.4 15.6 C52 22 47.5 27.5 41 31 C34 34.6 23 35 17.5 31 C16.4 30 16 28.6 16 27Z" fill="#a3683f"/><path d="M21 31.5 C28 34 37 33 42 29.5 C45 27 46 23.5 45.5 21.5 C39 26.5 29 29.5 21 31.5Z" fill="#eadcc4" stroke="none"/><path d="M35.5 13.5 C38.5 7.8 45 6.2 49.5 9.6 C51.2 10.9 52.2 12.6 52.4 14.6 C47 12.6 41 12.8 35.5 15.5Z" fill="#8b3d20" stroke="none"/>
+  <ellipse cx="45" cy="17.2" rx="5.2" ry="3.7" fill="#f4eee4" stroke="none"/><circle cx="45.8" cy="17.6" r="1.6" fill="#241b17" stroke="none"/><path d="M47.2 20.6 C49.6 21.6 50.4 23.8 48.6 26.2 C46.6 24.6 45.8 22.8 47.2 20.6Z" fill="#241b17" stroke="none"/>
+  <g class="wing"><path d="M20 22.5 C25.5 15.5 35 15 40.5 20 C35.5 27 26 29.5 17.5 28.5Z" fill="#74462a"/><path d="M24.5 21 L30 25 M28.5 18.8 L34.5 22.8" stroke="#3a2416" stroke-width="1.1" fill="none"/><path d="M22.5 27 C28 26.2 33 25 37 23" stroke="#f4eee4" stroke-width="1.4" fill="none"/></g>
+  <path d="M52 14.4 L57.4 15.7 L52 17.4Z" fill="#3a2a20"/></g><circle cx="48.4" cy="13.3" r="1.5" fill="#241b17"/><circle cx="48.9" cy="12.8" r=".5" fill="#fff"/></svg>
 
 <section class="layer" id="choice" hidden aria-labelledby="choiceTitle">
   <div class="choice-in">
@@ -829,8 +835,20 @@ function den(){
   // the two baskets at the door
   [[X+w*.46,Y+d+18],[X+w*.6,Y+d+18]].forEach(([bx,by]) => { blob(bx,by+2,16,'rgba(0,0,0,.3)',null,0,4); box(bx-14,by-20,28,20,'#c8955a',INK,1.6); box(bx-16,by-26,32,8,'#cf9f62',INK,1.6); line(bx,by-26,bx,by,2.4,'#c23a2c'); });
 }
-function sparrowAt(x,y,s,f,p){ ctx.save(); ctx.translate(x,y+(reduce?0:Math.max(0,Math.sin(t*2+p*3)-.9)*-20)); ctx.scale(s*f,s);
-  poly([[-5,0],[-12,2],[-11,4],[-3,2]],'#5a3424',INK,.8); blob(0,0,6.5,'#9a5e3a',INK,1,4.6); blob(4.5,-3.6,3.6,'#7e4026',INK,.9); blob(5,-2,2.2,'#f6efff',null,0,1.4); poly([[7.6,-4],[10.4,-3.3],[7.6,-2.6]],INK,null); ctx.restore(); }
+const BIRD = {tail:new Path2D('M18 26 L3 19 L4.5 23.5 L17 30Z'), body:new Path2D('M16 27 C17 18 27 13 35 13 C38 7.5 45 6 49.5 9.5 C51.5 11 52.6 13 52.4 15.6 C52 22 47.5 27.5 41 31 C34 34.6 23 35 17.5 31 C16.4 30 16 28.6 16 27Z'), belly:new Path2D('M21 31.5 C28 34 37 33 42 29.5 C45 27 46 23.5 45.5 21.5 C39 26.5 29 29.5 21 31.5Z'), cap:new Path2D('M35.5 13.5 C38.5 7.8 45 6.2 49.5 9.6 C51.2 10.9 52.2 12.6 52.4 14.6 C47 12.6 41 12.8 35.5 15.5Z'), wing:new Path2D('M20 22.5 C25.5 15.5 35 15 40.5 20 C35.5 27 26 29.5 17.5 28.5Z'), bib:new Path2D('M47.2 20.6 C49.6 21.6 50.4 23.8 48.6 26.2 C46.6 24.6 45.8 22.8 47.2 20.6Z'), beak:new Path2D('M52 14.4 L57.4 15.7 L52 17.4Z')};
+function birdShape(sc, flapA){ // drawn around its middle; facing right
+  ctx.save(); ctx.scale(sc,sc); ctx.translate(-34,-22); ctx.lineJoin='round'; ctx.strokeStyle=INK; ctx.lineWidth=1.7;
+  ctx.fillStyle='#5e3a26'; ctx.fill(BIRD.tail); ctx.stroke(BIRD.tail);
+  ctx.fillStyle='#a3683f'; ctx.fill(BIRD.body); ctx.stroke(BIRD.body);
+  ctx.fillStyle='#eadcc4'; ctx.fill(BIRD.belly); ctx.fillStyle='#8b3d20'; ctx.fill(BIRD.cap);
+  ctx.fillStyle='#f4eee4'; ctx.beginPath(); ctx.ellipse(45,17.2,5.2,3.7,0,0,7); ctx.fill();
+  ctx.fillStyle=INK; ctx.beginPath(); ctx.arc(45.8,17.6,1.6,0,7); ctx.fill(); ctx.fill(BIRD.bib);
+  ctx.save(); ctx.translate(26,26); ctx.rotate(-(flapA||0)); ctx.translate(-26,-26); ctx.fillStyle='#74462a'; ctx.fill(BIRD.wing); ctx.stroke(BIRD.wing);
+  ctx.strokeStyle='#f4eee4'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(22.5,27); ctx.bezierCurveTo(28,26.2,33,25,37,23); ctx.stroke(); ctx.restore();
+  ctx.strokeStyle=INK; ctx.lineWidth=1.7; ctx.fillStyle='#3a2a20'; ctx.fill(BIRD.beak); ctx.stroke(BIRD.beak);
+  ctx.fillStyle=INK; ctx.beginPath(); ctx.arc(48.4,13.3,1.5,0,7); ctx.fill();
+  ctx.restore(); }
+function sparrowAt(x,y,s,f,p){ ctx.save(); ctx.translate(x,y+(reduce?0:Math.max(0,Math.sin(t*2+p*3)-.9)*-20)); ctx.scale(s*f,s); birdShape(.3, 0); ctx.restore(); }
 function cedar(tr){ const s=tr.s, x=tr.x, y=tr.y, sw=reduce?0:Math.sin(t*.6+tr.p)*2;
   blob(x,y+2,22*s,'rgba(0,0,0,.3)',null,0,6*s); line(x,y,x,y-20*s,4*s,'#4a3424');
   [[0,-34,30,22],[0,-62,24,18],[0,-86,17,14],[0,-104,10,10]].forEach(([ox,oy,rx,ry],i) => blob(x+ox+sw*(i+1)*.5,y+oy*s,rx*s,shade(tr.c,i*6),INK,1.3,ry*s));
@@ -906,11 +924,7 @@ function drawSparrow(){
   blob(s.x,s.y+2,5,'rgba(0,0,0,.3)',null,0,2);
   softGlow(x,y,40,.1,'255,230,190');
   ctx.save(); ctx.translate(x,y); ctx.scale(f*1.15,1.15);
-  poly([[-5,0],[-13,2],[-12,4],[-3,2]],'#5a3424',INK,.9);
-  blob(0,0,7,'#9a5e3a',INK,1.1,5); blob(1.5,1.6,4.4,'#efdcc2',null,0,2.6);
-  ctx.save(); ctx.rotate(-fl); blob(-2,-3,8,'#7e4a2a',INK,.9,3); ctx.restore();
-  blob(5,-4,4,'#7e4026',INK,1); blob(5.6,-2.4,2.4,'#f6efff',null,0,1.6); blob(6.4,-4.6,.9,INK,null);
-  poly([[8.5,-4.6],[11.5,-3.8],[8.5,-3]],INK,null);
+  birdShape(.42, fl*.6);
   ctx.restore();
 }
 
