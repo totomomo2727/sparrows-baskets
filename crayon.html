@@ -538,6 +538,27 @@ body{background:#ebe9e5!important}
 .tale-in{background:#ebe9e5!important;border:2px solid #141414!important;border-radius:255px 15px 225px 15px/15px 225px 15px 255px!important}
 .tale .line{color:#141414!important;font-size:1.2rem!important}
 .goalbox li{border:2px solid #141414!important;color:#141414!important}
+
+/* ===== readable: every word in black handwriting ===== */
+:root{--paper:#141414;--pencil:#3a3632;--tomoshi:#c23a2c}
+#prologue *,.hud,.hud *,.layer,.layer *,#walkhint,#walkhint *,.nudge,.nudge *{font-family:"Gaegu",var(--f-hand),cursive!important;color:#141414!important;text-shadow:0 0 6px #ebe9e5,0 0 12px #ebe9e5,0 0 3px #ebe9e5!important}
+.cover .name,.cover .name *{font-weight:700!important}
+.poem p{font-weight:700!important;font-size:clamp(1.7rem,1.2rem + 1.9vw,2.6rem)!important;letter-spacing:.01em!important}
+.poem p.past{color:#5a554e!important;font-weight:400!important}
+.poem p.goal{color:#c23a2c!important}
+.nudge{font-size:1.05rem!important;letter-spacing:.02em!important;text-transform:none!important}
+.nudge i{background:#c23a2c!important}
+.cover .def,.tale .line,.goalbox .g{font-weight:700!important}
+.goalbox .t,.tale .place,.tools button,#skip,.walkhint span{font-weight:700!important;font-size:1.05rem!important}
+.cover .kicker{font-weight:700!important}
+.swap .treat .ch{color:#8a857c!important}
+.cover .name .or,.cover .name .or *{color:#fff3e8!important;text-shadow:none!important}
+.goalbox li.got,.goalbox li.got *{color:#fff3e8!important;text-shadow:none!important}
+.layer{background:rgba(235,233,229,.9)!important}
+.layer .btn,.layer button.btn{background:#ebe9e5!important;border:2px solid #141414!important}
+
+.tale .line,.tale .line.swap{opacity:1!important;transition:none!important}
+#cursorSparrow{filter:none!important;width:72px!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -871,9 +892,10 @@ function toneStroke(c){ if(_tc.has('s'+c)) return _tc.get('s'+c); const p=parseC
   if(p){ const lum=.3*p[0]+.59*p[1]+.11*p[2]; out = (lum>170 || p[3]<.3) ? 'rgba(0,0,0,0)' : '#1f1d1b'; }
   _tc.set('s'+c,out); return out; }
 const _P=CanvasRenderingContext2D.prototype, _F=Object.getOwnPropertyDescriptor(_P,'fillStyle'), _S=Object.getOwnPropertyDescriptor(_P,'strokeStyle');
+let RAWCOL = false;   // true while drawing the hero and the sparrow in their own colours
 { const P=_P, F=_F, S=_S;
-  Object.defineProperty(ctx,'fillStyle',{get(){return F.get.call(this)},set(v){F.set.call(this, typeof v==='string'?toneFill(v):v)}});
-  Object.defineProperty(ctx,'strokeStyle',{get(){return S.get.call(this)},set(v){S.set.call(this, typeof v==='string'?toneStroke(v):v)}}); }
+  Object.defineProperty(ctx,'fillStyle',{get(){return F.get.call(this)},set(v){F.set.call(this, (typeof v==='string' && !RAWCOL)?toneFill(v):v)}});
+  Object.defineProperty(ctx,'strokeStyle',{get(){return S.get.call(this)},set(v){S.set.call(this, (typeof v==='string' && !RAWCOL)?toneStroke(v):v)}}); }
 let VW=1, VH=1, DPR=1, K=1;
 function resize(){ DPR = Math.min(2, window.devicePixelRatio||1); VW = innerWidth; VH = innerHeight;
   [cv,fxc].forEach(c => { c.width = Math.round(VW*DPR); c.height = Math.round(VH*DPR); }); K = Math.max(VW, VH) / 980; }
@@ -1161,21 +1183,21 @@ function walker(wk){
 }
 function drawPlayer(){
   const x=player.x, y=player.y, b = player.moving && !reduce ? Math.abs(Math.sin(player.ph))*2.2 : 0, sw = player.moving && !reduce ? Math.sin(player.ph)*3 : 0, f = player.face;
-  wash(x,y+2,62,'rgba(255,180,90,.13)'); softGlow(x+12*f,y-18,90,.12);
-  blob(x,y+1,9,'rgba(0,0,0,.4)',null,0,3);
+  { const pts=[]; for(let i=0;i<14;i++){ const a=i/14*Math.PI*2; pts.push([x+Math.cos(a)*30, y-2+Math.sin(a)*12]); } crayon(pts,'#f4c943'); }
+  ctx.save(); ctx.translate(x,y); ctx.scale(1.9,1.9); ctx.translate(-x,-y); RAWCOL = true;
   line(x-2+sw,y-6,x-2+sw,y,2.4); line(x+2-sw,y-6,x+2-sw,y,2.4);
   poly([[x-6,y-5-b],[x-5,y-20-b],[x+5,y-20-b],[x+6,y-5-b]],'#3a4a7a',INK,1.4);
   line(x-5,y-12-b,x+5,y-12-b,2.4,'#c23a2c');
   blob(x,y-24-b,4.6,'#ecc9a4',INK,1.2); poly([[x-5,y-25-b],[x-3,y-30-b],[x+4,y-30-b],[x+5,y-25-b]],'#3a2a20',null);
   line(x+3*f,y-15-b,x+13*f,y-24-b,1.3,'#5a4028');
   chochin(x+13*f, y-17-b+Math.sin(t*3)*1, 5, 9, null);
+  RAWCOL = false; ctx.restore();
 }
 function drawSparrow(){
-  const s=sparrow, x=s.x, y=s.y-s.z, fl = reduce?0:Math.sin(s.flap)*.9, f=s.face;
-  blob(s.x,s.y+2,5,'rgba(0,0,0,.3)',null,0,2);
-  softGlow(x,y,40,.1,'255,230,190');
-  ctx.save(); ctx.translate(x,y); ctx.scale(f*1.15,1.15);
-  birdShape(.42, fl*.6);
+  const s=sparrow, x=s.x, y=s.y-s.z*1.8-30, fl = reduce?0:Math.sin(s.flap)*.9, f=s.face;
+  { const pts=[]; for(let i=0;i<12;i++){ const a=i/12*Math.PI*2; pts.push([s.x+Math.cos(a)*16, s.y+2+Math.sin(a)*6]); } crayon(pts,'#ee8a3c'); }
+  ctx.save(); ctx.translate(x,y); ctx.scale(f*2.1,2.1);
+  RAWCOL = true; ctx.lineWidth=2.4; birdShape(.42, fl*.6); RAWCOL = false;
   ctx.restore();
 }
 
