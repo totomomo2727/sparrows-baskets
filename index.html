@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Mochiy+Pop+One&family=Yuji+Syuku&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Potta+One&family=Yuji+Syuku&display=swap">
 <style>
 /* Layout: one screen, and the screen is a drawing of a small town and the bamboo woods behind it, done in ink
    and gouache on paper. It opens with a prologue told one inked line at a time. Lines wobble and overshoot,
@@ -26,7 +26,7 @@
   --tomoshi:#f0a24a;   /* lantern light, the only accent */
   --moss:#9ab04a;      /* the curse */
   --f-hand:"Gaegu","Klee One","Hiragino Maru Gothic ProN","Yu Gothic","Noto Sans CJK JP",cursive,sans-serif;
-  --f-pop:"Mochiy Pop One","Gaegu","Hiragino Maru Gothic ProN",sans-serif;
+  --f-pop:"Potta One","Gaegu","Hiragino Maru Gothic ProN",sans-serif;
   --f-brush:"Yuji Syuku","Hiragino Mincho ProN","Yu Mincho","Noto Serif CJK JP",serif;
   --rough:255px 18px 225px 16px / 16px 225px 18px 255px;
   color-scheme:dark;
@@ -48,18 +48,22 @@ canvas{display:block}
 .cover{position:relative;display:grid;justify-items:center;text-align:center;gap:14px;width:min(46rem,calc(100% - 32px));transition:opacity .7s,transform .7s}
 .cover.gone{opacity:0;transform:scale(.96);pointer-events:none}
 .cover .kicker{margin:0;font-size:1.25rem;color:var(--pencil);transform:rotate(-1.5deg);animation:fade .8s both}
-.cover .name{margin:0;font-weight:700;font-size:clamp(3.4rem,2rem + 7vw,7.6rem);line-height:.95;color:#fff4e4;letter-spacing:-.01em}
+.cover .name{margin:0;font-family:var(--f-pop);font-weight:400;font-size:clamp(3rem,1.8rem + 6vw,6.6rem);line-height:1.02;color:#fff4e4;letter-spacing:.01em;text-shadow:0 .04em 0 rgba(0,0,0,.35)}
 .cover .name .wd{display:inline-block;white-space:nowrap}
 .cover .name{display:grid;justify-items:center}
 .cover .name .l1{display:block}
-.swap{position:relative;display:block;height:1.25em;width:100%}
-.swap .treat{position:absolute;left:50%;top:0;translate:-50% 0;white-space:nowrap;animation:correct .9s 2.2s cubic-bezier(.5,0,.3,1) both}
+.swap{position:relative;display:block;height:1.5em;width:100%}
+.swap .treat{position:absolute;left:50%;top:0;translate:-50% 0;white-space:nowrap}
+.swap.go .treat{animation:correct .9s .75s cubic-bezier(.5,0,.3,1) both}
 @keyframes correct{to{transform:translate(-62%,-.62em) rotate(-8deg) scale(.42);opacity:.55;color:var(--pencil)}}
 .swap .scrib{position:absolute;left:-6%;top:28%;width:112%;height:60%;overflow:visible;pointer-events:none}
-.swap .scrib path{fill:none;stroke:var(--tomoshi);stroke-width:7;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420;animation:scribble .7s 1.5s ease-out forwards}
+.swap .scrib path{fill:none;stroke:var(--tomoshi);stroke-width:7;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420}
+.swap.go .scrib path{animation:scribble .7s ease-out forwards}
+.swap .treat,.swap .tsu{cursor:pointer}
 @keyframes scribble{to{stroke-dashoffset:0}}
-.swap .tsu{position:absolute;left:50%;top:.08em;translate:-50% 0;font-family:var(--f-pop);font-weight:400;font-size:.9em;color:#ffcf7a;letter-spacing:.01em;white-space:nowrap;
-  text-shadow:0 .05em 0 #8a4a1a;animation:tsupop .8s 2.7s cubic-bezier(.3,1.7,.5,1) both}
+.swap .tsu{position:absolute;left:50%;top:.08em;translate:-50% 0;font-family:var(--f-pop);font-weight:400;font-size:1.06em;color:#ffcf7a;letter-spacing:.01em;white-space:nowrap;
+  text-shadow:0 .05em 0 #8a4a1a;opacity:0}
+.swap.go .tsu{animation:tsupop .8s 1.25s cubic-bezier(.3,1.7,.5,1) both}
 @keyframes tsupop{0%{transform:scale(.2) rotate(-12deg);opacity:0}100%{transform:none;opacity:1}}
 .swap .tsu ruby{ruby-position:under;ruby-align:center}
 .swap .tsu rt{font-family:var(--f-brush);font-size:.26em;color:var(--tomoshi);letter-spacing:.5em;padding-top:.32em;text-shadow:none}
@@ -989,6 +993,16 @@ $('stickers').innerHTML = STICK.map(([id,x,y,r],i,arr,ox=0,oy=0) => (x = narrow 
   $('name').innerHTML = `<span class="l1"><span class="wd">${l1}</span> <span class="wd">${l1b}</span></span>
     <span class="swap"><span class="treat"><span class="wd">${tr}</span><svg class="scrib" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true"><path d="M6 34 C60 10 90 54 150 28 S240 8 294 30 M20 48 C90 26 200 52 280 22"/></svg></span>
     <span class="tsu"><ruby>Tsuzura<rt>つづら</rt></ruby></span></span>`; }
+{ const sw=document.querySelector('.swap'); let done=false;
+  const run = () => { sw.classList.remove('go'); void sw.offsetWidth; sw.classList.add('go'); setTimeout(scratch, 20); setTimeout(() => chirp(), 1300); };
+  const crossOut = () => { if(done) return; done=true; run(); };
+  const audible = () => ac && ac.state==='running' && soundOn;
+  // wait for the first tap so the scribble can be heard; fall back to silent after a few seconds
+  setTimeout(() => { if(audible()) crossOut(); }, 1700);
+  addEventListener('pointerdown', () => { startSound(); setTimeout(crossOut, 120); }, {once:true, capture:true});
+  addEventListener('keydown', () => { startSound(); setTimeout(crossOut, 120); }, {once:true, capture:true});
+  setTimeout(crossOut, 4500);
+  sw.addEventListener('click', e => { e.stopPropagation(); startSound(); setTimeout(run, 40); }); }
 $('minis').innerHTML = [['treat','hc','Hi-Chew!'],['trick','du','Durian. Ew.']].map(([label,id,tip]) => `<button type="button" class="mini" aria-label="Open the ${label} basket"><span class="tip">${tip}</span>${label==='trick' ? '<svg class="stinkies" viewBox="0 0 50 40"><path d="M14 38 C8 30 20 24 14 14 C9 6 17 2 14 0"/><path d="M32 38 C26 30 38 24 32 14 C27 6 35 2 32 0"/></svg>' : ''}<div class="pop">${candySVG(byId[id])}</div><svg class="b rough" viewBox="0 0 140 120">${BASKET}</svg><span>${label}</span></button>`).join('');
 $('minis').addEventListener('click', e => { const m = e.target.closest('.mini'); if(!m) return; e.stopPropagation(); startSound(); const was = m.classList.contains('open'); m.classList.toggle('open'); $('minihint').textContent = 'the real ones look exactly alike'; if(!was){ m.textContent.includes('trick') ? buzz() : (chime(), chirp()); } });
 if(gift0){ $('coverFrom').hidden = false; $('coverFrom').textContent = `${who} packed you two baskets.`; }
@@ -1147,7 +1161,7 @@ $('backTown').addEventListener('click', () => { $('packer').hidden=true; choiceO
 
 /* ================= sound ================= */
 let ac=null, master=null, soundOn=true;
-function startSound(){ if(!soundOn) return; try{ if(!ac) initAudio(); ac.resume(); master.gain.setTargetAtTime(.8, ac.currentTime, .3); }catch(e){} }
+function startSound(){ if(!soundOn) return; try{ if(!ac) initAudio(); ac.resume(); master.gain.setTargetAtTime(.8, ac.currentTime, .08); }catch(e){} }
 function audioKick(){ if(ac && ac.state==='suspended') ac.resume(); }
 function initAudio(){ ac = new (window.AudioContext||window.webkitAudioContext)(); master = ac.createGain(); master.gain.value=0; master.connect(ac.destination);
   const len=ac.sampleRate*3, buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0); let l=0; for(let i=0;i<len;i++){ l=(l+.02*(Math.random()*2-1))/1.02; d[i]=l*3; }
@@ -1164,6 +1178,15 @@ function blessChord(){ if(!ac||!soundOn) return; const n=ac.currentTime; [523,65
 function pop(){ if(!ac||!soundOn) return; const n=ac.currentTime; tone(90,n,.4,.2,'triangle',40); for(let i=0;i<8;i++) tone(2000+Math.random()*3000,n+.05+i*.04,.08,.02); }
 function sadTrombone(){ if(!ac||!soundOn) return; const n=ac.currentTime; [[392,370],[370,349],[349,330],[330,220]].forEach(([a,b],i) => tone(a,n+i*.45,i===3?1.2:.42,.12,'sawtooth',b)); tone(60,n,1.4,.3,'triangle',30); }
 function cackle(){ if(!ac||!soundOn) return; const n=ac.currentTime; for(let i=0;i<5;i++) tone(900-i*40,n+i*.14,.1,.07,'square',600); }
+function scratch(){ if(!ac||!soundOn) return; const n=ac.currentTime, len=ac.sampleRate*.8, buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+  const src=ac.createBufferSource(); src.buffer=buf; const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=1.4; const g=ac.createGain(); g.gain.value=.0001;
+  src.connect(bp).connect(g).connect(master);
+  const strokes=[0,.15,.29,.42,.56];
+  strokes.forEach((o,i) => { const a=n+o, f=1800+((i%2)?900:0)+Math.random()*400;
+    bp.frequency.setValueAtTime(f,a); bp.frequency.linearRampToValueAtTime(f+(i%2?-700:700),a+.12);
+    g.gain.setValueAtTime(.0001,a); g.gain.exponentialRampToValueAtTime(.55,a+.02); g.gain.exponentialRampToValueAtTime(.18,a+.08); g.gain.exponentialRampToValueAtTime(.0001,a+.13); });
+  src.start(n); src.stop(n+.8); }
 function buzz(){ if(!ac||!soundOn) return; tone(210+Math.random()*30, ac.currentTime, .25, .015, 'sawtooth', 230); }
 $('sound').addEventListener('click', () => { soundOn=!soundOn; try{ if(!ac) initAudio(); ac.resume(); master.gain.setTargetAtTime(soundOn?.8:0, ac.currentTime, .3); }catch(e){ soundOn=false; }
   $('sound').setAttribute('aria-pressed', soundOn); if(soundOn) setTimeout(() => chime(), 200); });
