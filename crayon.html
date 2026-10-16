@@ -630,7 +630,7 @@ body:has(#choice:not([hidden])) #tale, body:has(#result:not([hidden])) #tale{dis
 @keyframes swingS{0%,100%{rotate:-8deg}50%{rotate:8deg}}
 @keyframes hopA{0%,60%,100%{translate:0 0}30%{translate:0 -.12em}}
 @keyframes tiltT{0%,100%{rotate:4deg}50%{rotate:-6deg}}
-.cover .name .or{animation:spinSeal 6s linear 2s infinite!important}
+.cover .name .or{animation:spinO 5s linear 2s infinite!important}
 @keyframes spinSeal{0%{rotate:-8deg}50%{rotate:8deg}100%{rotate:-8deg}}
 .swap .tsu .tl{display:inline-block;position:relative}
 @media (prefers-reduced-motion:reduce){.cover .name .ch,.cover .name .tl{animation:none!important}}
@@ -1463,7 +1463,7 @@ const narrow = innerWidth < 640;
 $('stickers').innerHTML = STICK.map(([id,x,y,r],i,arr,ox=0,oy=0) => (x = narrow ? Math.min(80,Math.max(-2,x)) : x, y = narrow ? (y < 40 ? y - 6 : y + 8) : y, ox = (x < 50 ? -1 : 1)*260, oy = (y < 40 ? -1 : 1)*200, `<div class="sticker in" style="left:${x}%;top:${y}%;rotate:${r}deg;--fx:${ox}px;--fy:${oy}px;--d:${(.5+i*.12).toFixed(2)}s">${candySVG(byId[id])}</div>`)).join('');
 const TSU_EYES = {};
 const NAME_EYES = {};
-const MOVE = c => ({o:' spin',r:' rock',s:' swing',a:' hop',u:' hop',k:' rock',z:' swing',t:' tilt'})[c.toLowerCase()]||'';
+const MOVE = c => ({o:' spin',a:' spin'})[c.toLowerCase()]||'';
 { let d = .1; const drop = w => [...w].map((c,i) => `<span class="ch${/[A-Z]/.test(c)?' cap':''}${MOVE(c)}" style="--d:${(d += .05).toFixed(2)}s;--k:${(i*.37).toFixed(2)}s">${c}${(NAME_EYES[w]||{})[i]||''}</span>`).join('');
   const l1 = drop('tRicK'); d += .1; const l1b = drop('oR'); d += .1; const tr = drop('TreAt');
   $('name').innerHTML = `<span class="l1"><span class="wd">${l1}</span> <span class="wd or"><i class="burst" aria-hidden="true"></i>${l1b}</span></span>
