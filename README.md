@@ -50,4 +50,4 @@ For the link preview image to show up in iMessage, WhatsApp, and similar apps, c
 
 Based on 舌切り雀 (Shita-kiri Suzume), a traditional Japanese folktale.
 
-Title lettering uses [Darumadrop One](https://fonts.google.com/specimen/Darumadrop+One) by Maniackers Design (SIL Open Font License), embedded in the page, on flyer-style paper cut-outs. The little eyes are drawn on top with CSS.
+Title lettering uses [Darumadrop One](https://fonts.google.com/specimen/Darumadrop+One) by Maniackers Design (SIL Open Font License), embedded in the page.
