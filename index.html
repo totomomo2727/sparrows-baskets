@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Sparrow's Baskets</title>
-<meta name="description" content="Walk a hand-drawn lantern town into the bamboo woods to find the sparrow's den, then choose one of two baskets. One is a treat. The other is disgusting.">
+<meta name="description" content="A sparrow has hidden two baskets in the bamboo woods. One is full of sweets. The other is full of something awful. Find her den and pick one.">
 <meta name="theme-color" content="#1f1d27">
 <meta property="og:title" content="Someone packed you a basket.">
-<meta property="og:description" content="Find the sparrow's den. Choose the right basket. You only get one.">
+<meta property="og:description" content="Find the sparrow's den. Pick the sweets. Avoid the awful one.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Yuji+Syuku&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Yuji+Syuku&display=swap">
 <style>
 /* Layout: one screen, and the screen is a drawing of a small town and the bamboo woods behind it, done in ink
    and gouache on paper. It opens with a prologue told one inked line at a time. Lines wobble and overshoot,
-   fills sit off their outlines, the ink boils a little. Words are handwritten (Klee One); kanji are brushed (Yuji Syuku). */
+   fills sit off their outlines, the ink boils a little. Words are handwritten (Gaegu); kanji are brushed (Yuji Syuku). */
 :root{
   --night:#1f1d27;     /* the page, a dark wash */
   --paper:#f2ebde;     /* paper, and text on night */
@@ -25,13 +25,13 @@
   --ink:#241b17;       /* ink on paper */
   --tomoshi:#f0a24a;   /* lantern light, the only accent */
   --moss:#9ab04a;      /* the curse */
-  --f-hand:"Klee One","Hiragino Maru Gothic ProN","Yu Gothic","Noto Sans CJK JP",cursive,sans-serif;
+  --f-hand:"Gaegu","Klee One","Hiragino Maru Gothic ProN","Yu Gothic","Noto Sans CJK JP",cursive,sans-serif;
   --f-brush:"Yuji Syuku","Hiragino Mincho ProN","Yu Mincho","Noto Serif CJK JP",serif;
   --rough:255px 18px 225px 16px / 16px 225px 18px 255px;
   color-scheme:dark;
 }
 html,body{height:100%;margin:0;overflow:hidden;background:var(--night);color:var(--paper)}
-body{font-family:var(--f-hand);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{font-family:var(--f-hand);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased}
 [hidden]{display:none!important}
 *{box-sizing:border-box}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
@@ -48,12 +48,12 @@ canvas{display:block}
   background:radial-gradient(70% 60% at 50% 50%,rgba(31,29,39,.55),rgba(24,22,30,.94) 75%);transition:opacity 1.2s}
 #prologue.leaving{opacity:0;pointer-events:none}
 .poem{width:min(40rem,calc(100% - 40px));display:grid;gap:.2em;text-align:center}
-.poem p{margin:0;font-weight:600;font-size:clamp(1.55rem,1.1rem + 2.2vw,2.9rem);line-height:1.3;text-wrap:balance;
-  transition:opacity .8s,font-size .8s,color .8s,transform .8s}
-.poem p.past{font-size:clamp(1rem,.9rem + .5vw,1.3rem);color:var(--pencil);font-weight:400}
-.poem p.ink{animation:ink 1.1s cubic-bezier(.3,.6,.3,1) both}
-@keyframes ink{0%{clip-path:inset(-20% 100% -20% 0);opacity:.2;filter:blur(3px)}70%{filter:blur(0)}100%{clip-path:inset(-20% -2% -20% 0);opacity:1}}
-.poem p.big{font-size:clamp(2.6rem,1.6rem + 5vw,5.4rem);letter-spacing:.01em}
+.poem{gap:.5em}
+.poem p{margin:0;font-weight:700;font-size:clamp(1.9rem,1.3rem + 2.6vw,3.4rem);line-height:1.15;text-wrap:balance;transition:color .8s}
+.poem p.past{color:var(--pencil)}
+.poem p.goal{color:#ffd9a0}
+.caret{display:inline-block;width:.08em;height:.9em;margin-left:.06em;vertical-align:-.08em;background:var(--tomoshi);animation:blink .9s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
 .nudge{position:absolute;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font-size:.95rem;color:var(--pencil);display:flex;align-items:center;gap:10px;white-space:nowrap}
 .nudge i{width:9px;height:9px;border-radius:50%;background:var(--tomoshi);animation:breathe 1.6s ease-in-out infinite}
 @keyframes breathe{50%{transform:scale(1.6);opacity:.4}}
@@ -64,8 +64,8 @@ canvas{display:block}
 .titlecard h1 span{display:inline-block;animation:brush 1s cubic-bezier(.4,.2,.2,1) both}
 .titlecard h1 span:nth-child(2){animation-delay:.35s}.titlecard h1 span:nth-child(3){animation-delay:.7s}.titlecard h1 span:nth-child(4){animation-delay:1.05s}
 @keyframes brush{0%{clip-path:inset(0 0 100% 0);transform:translateY(-6px)}100%{clip-path:inset(-10% -10% -10% -10%);transform:none}}
-.titlecard .en{margin:0;font-size:clamp(1.3rem,1rem + 1.2vw,2rem);font-weight:600;animation:fade 1s 1.5s both}
-.titlecard .goal{margin:0;max-width:30ch;color:#e6dccb;font-size:1.1rem;animation:fade 1s 1.9s both}
+.titlecard .en{margin:0;font-size:clamp(1.8rem,1.3rem + 1.6vw,2.6rem);font-weight:700;animation:fade 1s 1.5s both}
+.titlecard .goal{margin:0;max-width:26ch;color:#ffd9a0;font-size:1.35rem;font-weight:700;animation:fade 1s 1.9s both}
 .titlecard .btn{animation:fade 1s 2.3s both}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 #cursorSparrow{position:fixed;left:0;top:0;width:58px;z-index:25;pointer-events:none;transition:opacity .6s}
@@ -238,7 +238,7 @@ legend{padding:0;margin:0 0 1rem;font-size:clamp(1.25rem,1.1rem + .8vw,1.7rem);f
 
 <div class="hud goalbox" id="goalbox">
   <p class="t">舌切り雀 · The Sparrow's Baskets</p>
-  <p class="g" id="goalText">Find the sparrow's den in the bamboo woods. Then choose the right basket.</p>
+  <p class="g" id="goalText">Find the sparrow's den in the bamboo woods. Pick the basket with the sweets in it.</p>
   <ol id="foundList" aria-label="The way to the den"></ol>
   <p class="how" id="how">Click anywhere to walk, or let the sparrow lead.</p>
 </div>
@@ -330,13 +330,58 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const touch = matchMedia('(pointer: coarse)').matches;
+const CANDY_ART = {
+ wr:`<path d="M22 40 L5 27 Q10 40 5 53Z" fill="#fbf8ee"/><path d="M68 40 L85 27 Q80 40 85 53Z" fill="#fbf8ee"/>
+   <rect x="19" y="26" width="52" height="28" rx="11" fill="#fdfbf4"/>
+   <path d="M27 29 v22 M35 29 v22 M55 29 v22 M63 29 v22" stroke="#2f6fb5" stroke-width="3"/><path d="M41 33 h8 M41 47 h8" stroke="#d23b30" stroke-width="2.6"/>
+   <rect x="78" y="44" width="34" height="20" rx="9" fill="#f4ecd6"/><rect x="76" y="41" width="38" height="26" rx="11" fill="rgba(255,255,255,.35)" stroke-dasharray="3 3" stroke-width="1.4"/>`,
+ hc:`<path d="M10 24 h52 v32 h-52z" fill="#e45c86"/><path d="M10 24 l-4 4 l4 4 l-4 4 l4 4 l-4 4 l4 4 l-4 4 M62 24 l4 4 l-4 4 l4 4 l-4 4 l4 4 l-4 4 l4 4" fill="none" stroke-width="1.6"/>
+   <path d="M36 32 c-8 -4 -12 6 -6 12 l6 6 l6 -6 c6 -6 2 -16 -6 -12z" fill="#d42a3a" stroke-width="1.6"/><path d="M33 31 l3 -5 l3 5" fill="#4a8a3a" stroke-width="1.4"/>
+   <circle cx="33" cy="38" r=".9" fill="#fde3a0" stroke="none"/><circle cx="39" cy="39" r=".9" fill="#fde3a0" stroke="none"/><circle cx="36" cy="44" r=".9" fill="#fde3a0" stroke="none"/>
+   <rect x="72" y="38" width="38" height="24" rx="8" fill="#f6a9c2"/><path d="M78 43 q6 -2 12 0" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>`,
+ bo:`<rect x="8" y="14" width="44" height="54" rx="2" fill="#f2cf3a"/><rect x="12" y="18" width="36" height="46" fill="none" stroke="#2f5aa8" stroke-width="2"/>
+   <circle cx="30" cy="38" r="11" fill="#e2435a" stroke-width="1.6"/><path d="M30 27 q5 6 0 11 q-5 -5 0 -11 M19 38 q6 -5 11 0 q-5 5 -11 0 M41 38 q-6 -5 -11 0 q5 5 11 0" fill="#f07a8a" stroke-width="1.2"/><circle cx="30" cy="38" r="3" fill="#f6d36a" stroke-width="1"/>
+   <path d="M22 54 q8 -4 16 0" stroke="#2f8a4a" stroke-width="2.4" fill="none"/>
+   <rect x="62" y="42" width="22" height="20" rx="5" fill="#f1a944"/><rect x="88" y="36" width="22" height="20" rx="5" fill="#f4bd52"/>
+   <rect x="60" y="40" width="26" height="24" rx="6" fill="rgba(255,255,255,.3)" stroke-dasharray="3 2" stroke-width="1.2"/><rect x="86" y="34" width="26" height="24" rx="6" fill="rgba(255,255,255,.3)" stroke-dasharray="3 2" stroke-width="1.2"/>`,
+ km:`<g><circle cx="30" cy="44" r="18" fill="#e4b16a"/><circle cx="15" cy="30" r="7" fill="#e4b16a"/><circle cx="45" cy="30" r="7" fill="#e4b16a"/>
+   <circle cx="15" cy="30" r="3.4" fill="#c98f4a" stroke="none"/><circle cx="45" cy="30" r="3.4" fill="#c98f4a" stroke="none"/>
+   <circle cx="24" cy="42" r="1.8" fill="#4a2a16" stroke="none"/><circle cx="36" cy="42" r="1.8" fill="#4a2a16" stroke="none"/><ellipse cx="30" cy="48" rx="4" ry="3" fill="#4a2a16" stroke="none"/></g>
+   <g><path d="M70 62 a17 17 0 0 1 2 -32 l6 6 l-4 6 l6 4 l-3 7 l7 3 a17 17 0 0 1 -14 6z" fill="#e4b16a"/><path d="M78 36 l-4 6 l6 4 l-3 7 l7 3" fill="none"/>
+   <path d="M76 38 l-2 4 l5 3 l-2 6 l5 2 q4 -8 -1 -14z" fill="#5a2e1a" stroke-width="1.2"/><circle cx="66" cy="34" r="6" fill="#e4b16a"/><circle cx="70" cy="47" r="1.6" fill="#4a2a16" stroke="none"/></g>
+   <path d="M96 58 q4 -6 8 0 q-4 6 -8 0z" fill="#e4b16a" stroke-width="1.4"/>`,
+ mk:`<rect x="6" y="26" width="76" height="34" rx="3" fill="#7fae4c"/>
+   <rect x="9" y="29" width="15" height="28" rx="2" fill="#9cc865" stroke-width="1.4"/><rect x="28" y="29" width="15" height="28" rx="2" fill="#9cc865" stroke-width="1.4"/><rect x="47" y="29" width="15" height="28" rx="2" fill="#9cc865" stroke-width="1.4"/><rect x="66" y="29" width="13" height="28" rx="2" fill="#9cc865" stroke-width="1.4"/>
+   <path d="M12 33 h8 M31 33 h8 M50 33 h8" stroke="#c9e6a0" stroke-width="2"/>
+   <g transform="rotate(14 102 44)"><rect x="92" y="22" width="18" height="40" rx="2" fill="#9cc865"/><path d="M92 62 h18" stroke-width="2"/>
+   <rect x="93" y="56" width="16" height="6" fill="#e7cf98" stroke="none"/><path d="M93 58 h16 M93 60.5 h16" stroke="#b08a50" stroke-width="1"/></g>`,
+ cp:`<path d="M6 30 q20 -14 44 -6 l-6 10 l10 4 q-26 -6 -48 6z" fill="#d43a2c" stroke-width="1.6"/>
+   <ellipse cx="44" cy="52" rx="34" ry="10" fill="#4a2414"/><path d="M10 52 q0 -22 34 -22 q34 0 34 22" fill="#5e2e1a"/><path d="M22 40 q14 -6 30 -2" stroke="#8a5030" stroke-width="2.4" fill="none"/>
+   <path d="M86 62 l0 -16 a16 10 0 0 1 28 0 l0 16z" fill="#5e2e1a"/><path d="M88 50 h24" stroke="#d8a868" stroke-width="5"/><path d="M88 55 h24" stroke="#f6f0e2" stroke-width="4"/><path d="M88 59 h24" stroke="#d8a868" stroke-width="4"/>`,
+ ft:`<path d="M14 58 q-6 -20 6 -34 q10 -10 18 4 q6 12 0 30 q-8 10 -24 0z" fill="#d6d36a" fill-opacity=".9"/>
+   <circle cx="18" cy="20" r="4" fill="#d6d36a"/><circle cx="26" cy="17" r="3.4" fill="#d6d36a"/><circle cx="33" cy="18" r="3" fill="#d6d36a"/><circle cx="38" cy="22" r="2.6" fill="#d6d36a"/>
+   <path d="M60 60 q-4 -16 6 -28 q8 -8 14 4 q4 10 0 24 q-6 8 -20 0z" fill="#c8e06a" fill-opacity=".9"/><circle cx="64" cy="30" r="3.4" fill="#c8e06a"/><circle cx="71" cy="27" r="3" fill="#c8e06a"/><circle cx="77" cy="29" r="2.4" fill="#c8e06a"/>
+   <path d="M92 52 c-6 -6 6 -10 0 -18 c-6 -8 6 -12 0 -20 M104 54 c-6 -6 6 -10 0 -18 c-6 -8 6 -12 0 -20" fill="none" stroke="#7d9a2a" stroke-width="2.2"/>`,
+ bg:`<path d="M10 50 q-2 -14 12 -16 q14 -2 12 12 q-2 12 -14 10 q-10 -1 -10 -6z" fill="#a9c23a"/><path d="M40 58 q-4 -12 10 -14 q12 0 10 12 q-4 10 -12 8 q-6 -1 -8 -6z" fill="#c2c84a"/>
+   <path d="M64 44 q0 -14 14 -12 q12 4 8 16 q-4 8 -14 6 q-8 -2 -8 -10z" fill="#9ab83a"/><path d="M88 60 q-2 -12 10 -12 q12 2 10 12 q-2 8 -12 8 q-8 -2 -8 -8z" fill="#b4c844"/>
+   <path d="M16 40 q4 -3 8 -1 M46 48 q4 -3 8 -1 M70 36 q4 -3 8 -1 M94 52 q4 -3 8 -1" stroke="#f4ffd0" stroke-width="2" fill="none"/><path d="M78 50 q2 8 -1 12" stroke="#9ab83a" stroke-width="3" fill="none"/>`,
+ sq:`<path d="M20 20 q22 -10 36 4 l6 26 q-24 10 -40 0z" fill="#efd9ae"/><path d="M20 20 l-10 6 l12 4 M56 24 l12 -2 l-8 8" fill="#efd9ae" stroke-width="1.6"/>
+   <path d="M28 46 q-2 14 -8 20 M36 48 q0 14 -4 22 M44 48 q2 12 6 20 M52 46 q4 10 10 16" fill="none" stroke-width="2"/>
+   <path d="M70 40 q12 4 26 0 M72 48 q12 6 30 2 M74 56 q12 4 28 0 M78 64 q10 2 22 -2" fill="none" stroke="#c8a070" stroke-width="3"/><path d="M26 30 q12 -4 24 2" stroke="#c87a5a" stroke-width="2" fill="none"/>`,
+ pd:`<ellipse cx="32" cy="52" rx="22" ry="10" fill="#3a2418"/><path d="M10 52 q0 -16 22 -16 q22 0 22 16" fill="#4a2e1e"/>
+   <path d="M18 40 q4 -10 12 -6 q6 -8 12 0 q8 -2 6 6 q4 6 -4 6 q-6 6 -12 0 q-8 4 -10 -2 q-8 0 -4 -4z" fill="#f6f6ee"/><circle cx="32" cy="40" r="3" fill="#8a8a7a" stroke-width="1"/>
+   <ellipse cx="84" cy="56" rx="20" ry="9" fill="#3a2418"/><path d="M64 56 q0 -14 20 -14 q20 0 20 14" fill="#4a2e1e"/><path d="M72 46 q4 -8 10 -4 q6 -6 10 1 q6 2 2 6 q-4 5 -10 1 q-8 4 -12 -4z" fill="#f6f6ee"/>
+   <path d="M100 16 q-12 8 -10 24 q10 -6 10 -24z" fill="#9aa4a8" stroke-width="1.4"/><path d="M100 16 q-6 12 -10 24" fill="none" stroke-width="1"/>`,
+ ew:`<path d="M12 56 q-4 -14 8 -20 q10 -6 16 4 q6 10 -2 18 q-10 6 -22 -2z" fill="#c98a2e"/><path d="M42 60 q-2 -10 8 -14 q10 -2 12 8 q0 10 -10 10 q-8 0 -10 -4z" fill="#d8a040"/>
+   <path d="M20 42 q4 -3 8 0 M48 50 q3 -2 6 0" stroke="#f6d890" stroke-width="2" fill="none"/>
+   <path d="M70 62 L108 22" stroke="#efe8dc" stroke-width="4"/><ellipse cx="68" cy="64" rx="6" ry="4.4" transform="rotate(-46 68 64)" fill="#f4efe6"/><ellipse cx="110" cy="20" rx="6" ry="4.4" transform="rotate(-46 110 20)" fill="#e0a040"/>`,
+ du:`<path d="M10 58 q-2 -36 40 -40 q42 4 40 40z" fill="#9aa83a"/>
+   <path d="M14 40 l-6 -4 l8 -2 M22 28 l-4 -7 l8 3 M36 20 l0 -8 l6 7 M54 18 l4 -7 l3 8 M70 24 l7 -5 l-1 8 M82 34 l8 -2 l-4 7 M88 48 l8 1 l-6 5" fill="#b4c040" stroke-width="1.6"/>
+   <path d="M20 58 q2 -22 30 -24 q28 2 30 24z" fill="#f2e3a0"/><ellipse cx="38" cy="50" rx="9" ry="7" fill="#f6d45a" stroke-width="1.4"/><ellipse cx="60" cy="50" rx="9" ry="7" fill="#f6d45a" stroke-width="1.4"/>
+   <path d="M98 50 c-6 -6 6 -10 0 -18 c-6 -8 6 -12 0 -20 M110 54 c-6 -6 6 -10 0 -18 c-6 -8 6 -12 0 -20" fill="none" stroke="#7d9a2a" stroke-width="2.2"/><circle cx="104" cy="60" r="2" fill="#241b17"/>`
+};
 function candySVG(c, cls=''){
-  return `<svg class="rough ${cls}" viewBox="0 0 120 70" aria-hidden="true"><g stroke="#241b17" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M30 35 L5 17 Q9 26 7 35 Q9 44 5 53 Z" fill="${c.c2}"/><path d="M90 35 L115 17 Q111 26 113 35 Q111 44 115 53 Z" fill="${c.c2}"/>
-    <rect x="25" y="13" width="70" height="44" rx="16" fill="${c.c1}"/></g>
-    <path d="M32 47 Q60 52 88 46" stroke="${c.c2}" stroke-width="3" fill="none" opacity=".45" stroke-linecap="round"/>
-    <path d="M33 22 Q38 18 46 19" stroke="#fff" stroke-width="2.5" fill="none" opacity=".75" stroke-linecap="round"/>
-    <text x="60" y="46" text-anchor="middle" font-family="Yuji Syuku, serif" font-size="27" fill="${c.ink}">${c.g}</text></svg>`;
+  return `<svg class="rough ${cls}" viewBox="0 0 120 80" aria-hidden="true"><g stroke="#241b17" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">${CANDY_ART[c.id]}</g></svg>`;
 }
 const BASKET = `<g stroke="#241b17" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><g class="lid"><rect x="6" y="22" width="128" height="26" rx="6" fill="url(#weave)"/>
   <rect x="66" y="22" width="8" height="26" fill="#c23a2c" stroke-width="1.5"/><path d="M70 24 C58 6 44 10 54 21 M70 24 C82 6 96 10 86 21" stroke="#c23a2c" stroke-width="4.5" fill="none"/></g>
@@ -458,8 +503,10 @@ window.addEventListener('resize', resize);
 /* ---- the hand: wobbly, overshooting ink ---- */
 let t = 0, boil = 0;
 const INK = '#241b17';
-function h2(a,b){ const s = Math.sin(a*127.1 + b*311.7 + boil*74.7)*43758.5453; return s - Math.floor(s); }
-const jj = (a,b,amp=1.1) => (h2(a,b)-.5)*2*amp;
+let jseed = 1, jn = 0;
+const setSeed = s => { jseed = s; jn = 0; };
+function h2(){ jn++; const s = Math.sin(jseed*91.37 + jn*12.9898)*43758.5453; return s - Math.floor(s); }
+const jj = (a,b,amp=1.1) => (h2()-.5)*2*amp;
 function line(x1,y1,x2,y2,w=1.7,col=INK){
   const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy)||1, ux=dx/L, uy=dy/L, o=Math.min(3.2,L*.08);
   const ax=x1-ux*o*h2(x1,y1)+jj(x1,y2), ay=y1-uy*o*h2(y1,x1)+jj(y1,x2), bx=x2+ux*o*h2(x2,y2)+jj(x2,y1), by=y2+uy*o*h2(y2,x2)+jj(y2,x1);
@@ -729,32 +776,32 @@ function drawSparrow(){
 
 /* ================= frame drawing ================= */
 function drawWorld(){
-  ctx.setTransform(1,0,0,1,0,0); ctx.fillStyle='#1f1d27'; ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(1,0,0,1,0,0); ctx.fillStyle='#2b2933'; ctx.fillRect(0,0,cv.width,cv.height);
   const k = K*DPR, sx=(Math.random()-.5)*shake*12, sy=(Math.random()-.5)*shake*12;
   ctx.setTransform(k,0,0,k, cv.width/2 - cam.x*k + sx*DPR, cv.height/2 - cam.y*k + sy*DPR);
   ctx.lineCap='round'; ctx.lineJoin='round';
   const vw=VW/K, vh=VH/K, x0=cam.x-vw/2-160, x1=cam.x+vw/2+160, y0=cam.y-vh/2-260, y1=cam.y+vh/2+420;
   const sx0=Math.max(0,x0), sy0=Math.max(0,y0), sx1=Math.min(WW,x1), sy1=Math.min(WH,y1);
   if(sx1>sx0 && sy1>sy0) ctx.drawImage(ground, sx0, sy0, sx1-sx0, sy1-sy0, sx0, sy0, sx1-sx0, sy1-sy0);
-  steps.forEach(m => blob(m.x, m.y, 2.2*(1-m.age)+.5, `rgba(255,200,120,${.7*(1-m.age)})`, null));
-  if(placeIdx < PLACES.length && !talking){ const p = PLACES[placeIdx]; wash(p.x,p.y,64+Math.sin(t*2)*6,'rgba(255,190,110,.12)'); }
+  steps.forEach(m => { setSeed(m.x); blob(m.x, m.y, 2.2*(1-m.age)+.5, `rgba(255,200,120,${.7*(1-m.age)})`, null); });
+  if(placeIdx < PLACES.length && !talking){ const p = PLACES[placeIdx]; setSeed(p.x); wash(p.x,p.y,64+Math.sin(t*2)*6,'rgba(255,190,110,.12)'); }
   const list = [], vis = (x,y,top=120) => x>x0 && x<x1 && y>y0 && y-top<y1;
-  buildings.forEach(b => { if(b.x+b.w+60 > x0 && b.x-60 < x1 && b.y+b.d > y0 && b.y-b.h-100 < y1) list.push([b.y+b.d, () => building(b)]); });
+  buildings.forEach(b => { if(b.x+b.w+60 > x0 && b.x-60 < x1 && b.y+b.d > y0 && b.y-b.h-100 < y1) list.push([b.y+b.d, () => building(b), b.seed]); });
   gardens.forEach(gd => { if(vis(gd.x,gd.y)) list.push([gd.y+gd.r*.4, () => garden(gd)]); });
-  list.push([GATE.y+GATE.d, gate], [BATH.y+BATH.d, bath]);
-  if(y0 < 400) list.push([DEN.y+DEN.d, den]);
-  trees.forEach(tr => { if(vis(tr.x,tr.y,140)) list.push([tr.y, () => cedar(tr)]); });
-  bamboo.forEach(s => { if(vis(s.x,s.y,s.h)) list.push([s.y, () => bambooStalk(s)]); });
+  list.push([GATE.y+GATE.d, gate, 11], [BATH.y+BATH.d, bath, 12]);
+  if(y0 < 400) list.push([DEN.y+DEN.d, den, 13]);
+  trees.forEach((tr,i) => { if(vis(tr.x,tr.y,140)) list.push([tr.y, () => cedar(tr), 3000+i]); });
+  bamboo.forEach((s,i) => { if(vis(s.x,s.y,s.h)) list.push([s.y, () => bambooStalk(s), 4000+i]); });
   ferns.forEach(f => { if(vis(f.x,f.y,20)) list.push([f.y, () => fern(f)]); });
   stoneLanterns.forEach(([x,y]) => { if(vis(x,y,40)) list.push([y, () => stoneLantern(x,y)]); });
   if(vis(890,1000,90)) list.push([1000, () => smallTorii(890,1000)]);
   if(vis(380,520,70)) list.push([520, foxShrine]); if(vis(560,240,50)) list.push([240, tanukiDrum]);
-  if(y0 < 1850 && y1 > 1650){ jizo.forEach((j,i) => list.push([j.y, () => jizoFig(j,i)])); lilies.forEach(l => list.push([l.y, () => lily(l)])); list.push([1832, kasa]); }
+  if(y0 < 1850 && y1 > 1650){ jizo.forEach((j,i) => list.push([j.y, () => jizoFig(j,i)])); lilies.forEach(l => list.push([l.y, () => lily(l)])); list.push([1832, kasa, 14]); }
   if(y0 < 1420 && y1 > 1300) list.push([1345, () => { for(let i=0;i<laneLanterns.length-1;i++) line(laneLanterns[i].x,1380-38,laneLanterns[i+1].x,1380-38,1);
     laneLanterns.forEach(l => l.obake ? obake(l.x,1380-24) : chochin(l.x,1380-24,9,l.x,null)); }]);
-  walkers.forEach(w => { const s=w.s; list.push([s.y0+(s.y1-s.y0)*w.u, () => walker(w)]); });
-  list.push([player.y, drawPlayer], [sparrow.y, drawSparrow]);
-  list.sort((a,b) => a[0]-b[0]); list.forEach(([,f]) => f());
+  walkers.forEach((w,i) => { const s=w.s; list.push([s.y0+(s.y1-s.y0)*w.u, () => walker(w), 7000+i]); });
+  list.push([player.y, drawPlayer, 9001], [sparrow.y, drawSparrow, 9002]);
+  list.sort((a,b) => a[0]-b[0]); list.forEach(([y,f,sd]) => { setSeed(sd ?? y); f(); });
   if(y0 < TOWN_Y){ fireflies.forEach(f => firefly(f)); pondFlies.forEach(f => firefly(f)); }
   ctx.imageSmoothingEnabled = true; paintFog(); ctx.drawImage(fogC, 0, 0, WW, WH);
   ctx.globalCompositeOperation='multiply'; ctx.globalAlpha=.6; ctx.fillStyle=grainPat; ctx.fillRect(x0,y0,x1-x0,y1-y0); ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
@@ -828,43 +875,45 @@ if(touch) $('how').textContent = 'Tap anywhere to walk, or let the sparrow lead.
 /* ================= the prologue ================= */
 const who = gift0 && (gift0.f || 'Somebody');
 const LINES = gift0 ? [
-  'Once, a kind old man kept a sparrow.',
-  'One night, she flew away.',
-  `${who} has left two baskets for you at her den, deep in the bamboo past this town.`,
-  'Find it.',
-  `One basket holds a treat. The other holds something truly awful. ${who} knows which.`,
-  'Choose well.'
+  `${who} hid two baskets for you in the bamboo woods.`,
+  'One is full of sweets. The other is full of something awful.',
+  "Walk through the town, find the sparrow's den, and pick one."
 ] : [
-  'Once, a kind old man kept a sparrow.',
-  'One night, she flew away.',
-  'Her den is hidden in the bamboo woods, past the edge of this town.',
-  'Find it.',
-  'At the door, she will offer you two baskets. One holds a treat. The other holds something truly awful.',
-  'Choose well.'
+  'A sparrow has hidden two baskets in the bamboo woods.',
+  'One is full of sweets. The other is full of something awful.',
+  'Walk through the town, find her den, and pick one.'
 ];
-const BIG = new Set([3,5]);
-let pstep = -1, pbusy = false, plock = 0;
-$('nudgeText').textContent = touch ? 'Tap to continue' : 'Click, scroll or press space';
+let pstep = -1, typing = null, timer = null;
+$('nudgeText').textContent = touch ? 'Tap to skip ahead' : 'Click to skip ahead';
+function typeLine(i){
+  const poem = $('poem'); poem.querySelectorAll('p').forEach(p => p.classList.add('past'));
+  const p = document.createElement('p'); if(i === LINES.length-1) p.classList.add('goal');
+  const span = document.createElement('span'), caret = document.createElement('i'); caret.className = 'caret';
+  p.appendChild(span); p.appendChild(caret); poem.appendChild(p);
+  const text = LINES[i]; let k = 0;
+  if(reduce){ span.textContent = text; caret.remove(); return lineDone(); }
+  typing = () => { clearTimeout(timer); span.textContent = text; caret.remove(); typing = null; lineDone(); };
+  const tick = () => { k++; span.textContent = text.slice(0,k); if(k % 3 === 0) keyTap();
+    if(k >= text.length){ typing = null; setTimeout(() => caret.remove(), 600); return lineDone(); }
+    const ch = text[k-1]; timer = setTimeout(tick, /[.,!?]/.test(ch) ? 260 : 34 + Math.random()*26); };
+  timer = setTimeout(tick, 200);
+}
+function lineDone(){ clearTimeout(timer); timer = setTimeout(advance, pstep === LINES.length-1 ? 1300 : 900); }
 function advance(){
-  if(pbusy || performance.now() < plock) return; plock = performance.now() + 650;
-  const poem = $('poem');
-  if(pstep < LINES.length-1){
-    pstep++;
-    poem.querySelectorAll('p').forEach(p => p.classList.add('past'));
-    const p = document.createElement('p'); p.textContent = LINES[pstep]; p.className = 'ink' + (BIG.has(pstep) ? ' big' : '');
-    poem.appendChild(p); while(poem.children.length > 3) poem.firstChild.remove();
-    hopSparrow(); chirp();
-  } else if(pstep === LINES.length-1){
-    pstep++; pbusy = true; poem.style.transition='opacity .6s'; poem.style.opacity = 0;
+  if(typing){ typing(); return; }
+  clearTimeout(timer);
+  if(pstep < LINES.length-1){ pstep++; typeLine(pstep); hopSparrow(); chirp(); return; }
+  if(pstep === LINES.length-1){
+    pstep++; const poem = $('poem'); poem.style.transition='opacity .6s'; poem.style.opacity = 0;
     setTimeout(() => { poem.style.opacity = 1; poem.innerHTML = `<div class="titlecard"><h1 aria-label="Shita-kiri Suzume"><span>舌</span><span>切</span><span>り</span><span>雀</span></h1>
-      <p class="en">The Sparrow's Baskets</p><p class="goal">Find the sparrow's den. Choose the right basket.</p>
+      <p class="en">The Sparrow's Baskets</p><p class="goal">Find the den. Pick the sweets. Avoid the awful one.</p>
       <button class="btn" type="button" id="begin">Start looking</button></div>`; $('nudge').hidden = true;
-      $('begin').addEventListener('click', e => { e.stopPropagation(); begin(); }); pbusy = false; chime(); }, 650);
+      $('begin').addEventListener('click', e => { e.stopPropagation(); begin(); }); chime(); }, 650);
   }
 }
+setTimeout(advance, 600);
 $('prologue').addEventListener('click', e => { if(e.target.closest('#skip') || e.target.closest('#begin')) return; audioKick(); advance(); });
-$('prologue').addEventListener('wheel', e => { if(Math.abs(e.deltaY) > 18) advance(); }, {passive:true});
-window.addEventListener('keydown', e => { if(started) return; if([' ','enter','arrowdown','arrowright','pagedown'].includes(e.key.toLowerCase())){ e.preventDefault(); if(pstep >= LINES.length) begin(); else advance(); } });
+window.addEventListener('keydown', e => { if(started) return; if([' ','enter','arrowdown','arrowright','pagedown'].includes(e.key.toLowerCase())){ e.preventDefault(); if(pstep > LINES.length-1) begin(); else advance(); } });
 $('skip').addEventListener('click', e => { e.stopPropagation(); begin(); });
 function begin(){
   if(started) return; started = true; $('prologue').classList.add('leaving'); $('cursorSparrow').style.opacity = 0;
@@ -990,6 +1039,7 @@ function initAudio(){ ac = new (window.AudioContext||window.webkitAudioContext)(
 function tone(f,at,dur,vol,type='sine',f2){ if(!ac||!soundOn) return; const o=ac.createOscillator(), g=ac.createGain(); o.type=type; o.frequency.setValueAtTime(f,at); if(f2) o.frequency.exponentialRampToValueAtTime(f2,at+dur);
   g.gain.setValueAtTime(.0001,at); g.gain.exponentialRampToValueAtTime(vol,at+.015); g.gain.exponentialRampToValueAtTime(.0001,at+dur); o.connect(g).connect(master); o.start(at); o.stop(at+dur+.05); }
 function chime(v=1){ if(!ac||!soundOn) return; const n=ac.currentTime, b=[1318.5,1568,1760,2093][Math.floor(Math.random()*4)]; [1,2.76,5.4].forEach((p,i) => tone(b*p,n,3/(i+1),.08*v/(i+1))); }
+function keyTap(){ if(!ac||!soundOn) return; tone(900+Math.random()*300, ac.currentTime, .03, .015, 'square', 600); }
 function chirp(){ if(!ac||!soundOn) return; const n=ac.currentTime; for(let k=0;k<2;k++) tone(3200, n+k*.12, .07, .03, 'sine', 4600); }
 function footstep(){ if(!ac||!soundOn) return; tone(180+Math.random()*60, ac.currentTime, .06, .03, 'triangle', 90); }
 function rattle(){ if(!ac||!soundOn) return; const n=ac.currentTime; for(let i=0;i<6;i++) tone(300+Math.random()*200, n+i*.08, .05, .05, 'square', 150); }
@@ -1004,13 +1054,14 @@ $('sound').addEventListener('click', () => { soundOn=!soundOn; try{ if(!ac) init
 /* ================= loop ================= */
 let last = performance.now();
 function frame(now){
-  const dt=Math.min(.05,(now-last)/1000); last=now; if(!reduce){ t+=dt; boil=Math.floor(t*4); }
+  const dt=Math.min(.05,(now-last)/1000); last=now; if(!reduce){ t+=dt; }
   if(started){ updatePlayer(dt); checkPlaces(); checkWhispers(); }
   updateSparrow(dt); updateCursorSparrow(dt);
   walkers.forEach(w => { const s=w.s, len=Math.hypot(s.x1-s.x0,s.y1-s.y0); w.u += w.dir*w.v*dt/len; if(w.u>1){ w.u=1; w.dir=-1; } if(w.u<0){ w.u=0; w.dir=1; } });
   for(let i=steps.length-1;i>=0;i--){ steps[i].age += dt*.8; if(steps[i].age>1) steps.splice(i,1); }
   const tx = started ? player.x : 890, ty = started ? player.y-70 : 2150 + Math.sin(t*.2)*20;
-  cam.x += (tx-cam.x)*(1-Math.exp(-dt*3)); cam.y += (ty-cam.y)*(1-Math.exp(-dt*3));
+  const hw = VW/K/2, hh = VH/K/2, ctx_ = Math.min(Math.max(tx, hw), WW-hw), cty = Math.min(Math.max(ty, hh), WH-hh);
+  cam.x += ((WW < hw*2 ? WW/2 : ctx_)-cam.x)*(1-Math.exp(-dt*3)); cam.y += ((WH < hh*2 ? WH/2 : cty)-cam.y)*(1-Math.exp(-dt*3));
   lungeT=Math.max(0,lungeT-dt*.6); shake=Math.max(0,shake-dt*1.3);
   if(boost){ blessWave=Math.min(1,blessWave+dt*.6); if(blessWave>.2) reveal(player.x,player.y,260+blessWave*2200); }
   if(doom) doomWave=Math.min(1,doomWave+dt*.8);

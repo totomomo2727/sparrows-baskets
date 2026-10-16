@@ -6,7 +6,7 @@ A Halloween trick-or-treat for grown-ups, based on the Japanese folktale *Shita-
 
 ## How it plays
 
-1. **Read the prologue.** Six short lines ink in one at a time as you click, tap or scroll, with a sparrow following your cursor. The goal is clear from the start: find the sparrow's den, then choose the right basket.
+1. **Read the prologue.** Three short lines type themselves out, with a sparrow following your cursor: a sparrow has hidden two baskets in the bamboo woods, one full of sweets and one full of something awful, so walk through the town, find her den, and pick one.
 2. **Explore.** Walk a small town at night, drawn in wobbly ink on paper, then leave through the north gate into the bamboo woods. Click or tap where you want to walk (or use the arrow keys). The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, or you can let her lead with *Follow the sparrow*.
 3. **Find four places.** The story is told by the crossroads, Lantern Lane, the edge of town, and the sparrow's den deep in the woods. A few hidden corners have their own small surprises.
 4. **Pick.** At the den, two identical baskets wait. One holds a treat. The other holds something you will regret.
@@ -20,7 +20,7 @@ Treats are real pan-Asian candy: White Rabbit, Hi-Chew, Botan Rice Candy, Koala'
 
 It's a single static `index.html` with no build step, no backend, and no dependencies besides Google Fonts.
 
-- The town is drawn on a `<canvas>` from code with a deliberately unsteady hand: every line wobbles and overshoots, fills sit slightly off their outlines, the ink redraws a few times a second like hand-drawn animation, and a paper grain sits over everything. A low-resolution fog map tracks what you have uncovered.
+- The town is drawn on a `<canvas>` from code with a deliberately unsteady hand: every line wobbles and overshoots, fills sit slightly off their outlines, and a paper grain sits over everything. The wobble is seeded per object so drawings stay still as the camera moves. A low-resolution fog map tracks what you have uncovered.
 - A gift is encoded into the link's hash (`#b.<base64url JSON>`), so nothing is stored anywhere. Share links are built from the page's own address, so they work wherever you host it.
 - Sound (wind chimes, rain, a low hum) is generated with Web Audio and stays off until you turn it on.
 - Motion is reduced when the visitor has `prefers-reduced-motion` turned on.
