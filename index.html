@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Sparrow's Baskets</title>
-<meta name="description" content="A sparrow has hidden two baskets in the bamboo woods. One is full of sweets. The other is full of something awful. Find her den and pick one.">
+<title>Trick or Tsuzura</title>
+<meta name="description" content="A Japanese folk tale, with candy. Follow the sparrow through a lantern town into the bamboo woods and open one of two baskets: sweets, or something you will regret.">
 <meta name="theme-color" content="#1f1d27">
-<meta property="og:title" content="Someone packed you a basket.">
-<meta property="og:description" content="Find the sparrow's den. Pick the sweets. Avoid the awful one.">
+<meta property="og:title" content="Trick or Tsuzura">
+<meta property="og:description" content="Someone left you two baskets at the sparrow's den. One is sweets. One is truly disgusting. You only get to open one.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -43,15 +43,42 @@ canvas{display:block}
 #tint{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:0;transition:opacity 1.4s;mix-blend-mode:multiply}
 .rough{filter:url(#rough)}
 
-/* ---------- prologue ---------- */
+/* ---------- cover + prologue ---------- */
+.cover{position:relative;display:grid;justify-items:center;text-align:center;gap:14px;width:min(46rem,calc(100% - 32px));transition:opacity .7s,transform .7s}
+.cover.gone{opacity:0;transform:scale(.96);pointer-events:none}
+.cover .kicker{margin:0;font-size:1.25rem;color:var(--pencil);transform:rotate(-1.5deg)}
+.cover .name{margin:0;font-weight:700;font-size:clamp(3.4rem,2rem + 7vw,7.6rem);line-height:.95;color:#fff4e4;letter-spacing:-.01em;animation:fade 1s .2s both}
+.cover .name ruby{ruby-position:under}
+.cover .name rt{font-family:var(--f-brush);font-size:.22em;color:var(--tomoshi);letter-spacing:.08em;padding-top:.3em}
+.cover .def{margin:6px 0 4px;max-width:34ch;font-size:1.2rem;line-height:1.45;color:#e6dccb;animation:fade 1s .6s both}
+.cover .def b{color:var(--paper)}
+.cover .btn{animation:fade 1s 1s both;font-size:1.25rem}
+.cover .from{margin:0;font-size:1.3rem;font-weight:700;color:#ffd9a0}
+.stickers{position:absolute;inset:0;pointer-events:none}
+.sticker{position:absolute;width:clamp(64px,8vw,116px);animation:float 5s ease-in-out infinite,fade 1s both}
+.sticker svg{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+@keyframes float{50%{translate:0 -8px}}
+.walkhint{position:fixed;z-index:4;left:50%;top:58%;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:6px;pointer-events:none;transition:opacity .6s}
+.walkhint span{font-size:1.5rem;font-weight:700;color:var(--paper);background:rgba(31,29,39,.78);padding:4px 16px 6px;border-radius:var(--rough);transform:rotate(-2deg);white-space:nowrap}
+.walkhint i{width:44px;height:44px;border:3px solid var(--tomoshi);border-radius:50%;animation:tap 1.4s ease-out infinite}
+@keyframes tap{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.choice-in .pickme{display:flex;align-items:center;gap:10px;margin:0;font-size:1.5rem;font-weight:700;color:#ffd9a0;transform:rotate(-2deg)}
+.choice-in .pickme svg{width:46px;height:46px}
+.bk.invite:nth-child(1){animation:invite 2.4s ease-in-out infinite}
+.bk.invite:nth-child(2){animation:invite 2.4s 1.2s ease-in-out infinite}
+@keyframes invite{0%,70%,100%{transform:translateY(0) rotate(0)}78%{transform:translateY(-14px) rotate(-4deg)}86%{transform:translateY(0) rotate(3deg)}}
+.tale-in{pointer-events:auto;cursor:pointer}
+.tale .more{display:block;margin-top:4px;font-size:.85rem;color:#7a6a58}
+.tale.whisper .more{color:var(--pencil)}
 #prologue{position:fixed;inset:0;z-index:20;display:grid;place-items:center;cursor:pointer;overflow:hidden;
   background:radial-gradient(70% 60% at 50% 50%,rgba(31,29,39,.55),rgba(24,22,30,.94) 75%);transition:opacity 1.2s}
 #prologue.leaving{opacity:0;pointer-events:none}
 .poem{width:min(40rem,calc(100% - 40px));display:grid;gap:.2em;text-align:center}
 .poem{gap:.5em}
-.poem p{margin:0;font-weight:700;font-size:clamp(1.9rem,1.3rem + 2.6vw,3.4rem);line-height:1.15;text-wrap:balance;transition:color .8s}
-.poem p.past{color:var(--pencil)}
+.poem p{margin:0;font-weight:700;font-size:clamp(1.7rem,1.2rem + 2.2vw,3rem);line-height:1.15;text-wrap:balance;transition:color .8s}
+.poem p.past{color:var(--pencil);font-size:clamp(1.1rem,.95rem + .7vw,1.5rem);font-weight:400}
 .poem p.goal{color:#ffd9a0}
+.poem .go{margin-top:18px;justify-self:center;animation:fade .8s both}
 .caret{display:inline-block;width:.08em;height:.9em;margin-left:.06em;vertical-align:-.08em;background:var(--tomoshi);animation:blink .9s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .nudge{position:absolute;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font-size:.95rem;color:var(--pencil);display:flex;align-items:center;gap:10px;white-space:nowrap}
@@ -211,6 +238,8 @@ legend{padding:0;margin:0 0 1rem;font-size:clamp(1.25rem,1.1rem + .8vw,1.7rem);f
 .coda{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:4.5rem;color:var(--pencil);font-size:.95rem}
 
 @media (max-width:640px){
+  .sticker{width:58px}
+  .sticker:nth-child(n+5){display:none}
   .wrappers{grid-template-columns:repeat(2,minmax(0,1fr))}
   .goalbox .how{display:none}
   #cursorSparrow{width:46px}
@@ -237,22 +266,30 @@ legend{padding:0;margin:0 0 1rem;font-size:clamp(1.25rem,1.1rem + .8vw,1.7rem);f
 <canvas id="fx" aria-hidden="true"></canvas>
 
 <div class="hud goalbox" id="goalbox">
-  <p class="t">舌切り雀 · The Sparrow's Baskets</p>
-  <p class="g" id="goalText">Find the sparrow's den in the bamboo woods. Pick the basket with the sweets in it.</p>
+  <p class="t">Trick or Tsuzura</p>
+  <p class="g" id="goalText">Find the sparrow's den in the bamboo woods. Open the basket with the sweets.</p>
   <ol id="foundList" aria-label="The way to the den"></ol>
-  <p class="how" id="how">Click anywhere to walk, or let the sparrow lead.</p>
 </div>
-<div class="hud tale" id="tale" aria-live="polite"><div class="tale-in"><p class="place" id="place"></p><p class="line" id="line"></p></div></div>
+<div class="hud tale" id="tale" aria-live="polite"><div class="tale-in" id="taleIn"><p class="place" id="place"></p><p class="line" id="line"></p><span class="more">tap to continue</span></div></div>
 <div class="hud tools" id="tools">
   <button type="button" id="follow" aria-pressed="false">Follow the sparrow</button>
-  <button type="button" id="sound" aria-pressed="false">Sound</button>
+  <button type="button" id="sound" aria-pressed="true">Sound</button>
 </div>
 
-<section id="prologue" aria-label="Prologue" tabindex="0">
-  <button class="skip" type="button" id="skip">Skip</button>
-  <div class="poem" id="poem" aria-live="polite"></div>
-  <p class="nudge" id="nudge"><i></i><span id="nudgeText">Click, tap or scroll</span></p>
+<section id="prologue" aria-label="Trick or Tsuzura" tabindex="0">
+  <button class="skip" type="button" id="skip">Skip the story</button>
+  <div class="cover" id="cover">
+    <div class="stickers" id="stickers" aria-hidden="true"></div>
+    <p class="kicker">a Japanese folk tale, with candy</p>
+    <h1 class="name">Trick or <ruby>Tsuzura<rt>つづら</rt></ruby></h1>
+    <p class="from" id="coverFrom" hidden></p>
+    <p class="def"><b>tsuzura</b> (n.) a woven basket. In the old story, a sparrow offers one to every guest. Some get treasure. Some get monsters.</p>
+    <button class="btn" type="button" id="openStory">Hear the story</button>
+  </div>
+  <div class="poem" id="poem" aria-live="polite" hidden></div>
+  <p class="nudge" id="nudge" hidden><i></i><span id="nudgeText">Click to skip ahead</span></p>
 </section>
+<div class="walkhint" id="walkhint" hidden><i></i><span id="walkText">Click anywhere to walk</span></div>
 <svg id="cursorSparrow" class="rough" viewBox="0 0 60 44" aria-hidden="true"><g stroke="#241b17" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
   <path d="M14 26 L2 30 L4 34 L16 30Z" fill="#5a3424"/><ellipse cx="26" cy="26" rx="15" ry="11" fill="#9a5e3a"/><ellipse cx="29" cy="30" rx="10" ry="6" fill="#efdcc2" stroke="none"/>
   <path class="wing" d="M14 22 Q24 8 36 18 Q28 26 14 22Z" fill="#7e4a2a"/><circle cx="40" cy="18" r="9" fill="#7e4026"/><ellipse cx="42" cy="22" rx="6" ry="4" fill="#f6efff" stroke="none"/>
@@ -260,8 +297,10 @@ legend{padding:0;margin:0 0 1rem;font-size:clamp(1.25rem,1.1rem + .8vw,1.7rem);f
 
 <section class="layer" id="choice" hidden aria-labelledby="choiceTitle">
   <div class="choice-in">
-    <h2 id="choiceTitle">Choose a basket.</h2>
+    <h2 id="choiceTitle">You found the sparrow's den.</h2>
+    <p class="note" id="choiceLead">She holds out two baskets. One is full of sweets. One is full of something awful.</p>
     <p class="note" id="choiceNote" hidden></p>
+    <p class="pickme"><svg class="rough" viewBox="0 0 50 50" aria-hidden="true"><path d="M8 8 C30 6 40 18 36 40 M26 32 L36 42 L44 30" fill="none" stroke="#ffd9a0" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Click one basket to open it</p>
     <div class="baskets">
       <button class="bk" type="button" data-i="0" id="bk0" aria-label="The left basket"><svg class="rough" viewBox="0 0 140 120" aria-hidden="true"></svg><span aria-hidden="true">壱</span></button>
       <button class="bk" type="button" data-i="1" id="bk1" aria-label="The right basket"><svg class="rough" viewBox="0 0 140 120" aria-hidden="true"></svg><span aria-hidden="true">弐</span></button>
@@ -813,7 +852,7 @@ function drawWorld(){
 /* ================= moving ================= */
 const s2w = (px,py) => [cam.x + (px - VW/2)/K, cam.y + (py - VH/2)/K];
 let dragging=false;
-cv.addEventListener('pointerdown', e => { if(!started || choiceOpen) return; dragging=true; setFollow(false); const [x,y] = s2w(e.clientX,e.clientY); player.tx=x; player.ty=y; firstMove(); });
+cv.addEventListener('pointerdown', e => { startSound(); if(!started || choiceOpen) return; dragging=true; setFollow(false); const [x,y] = s2w(e.clientX,e.clientY); player.tx=x; player.ty=y; firstMove(); });
 window.addEventListener('pointermove', e => { if(!dragging) return; const [x,y] = s2w(e.clientX,e.clientY); player.tx=x; player.ty=y; });
 window.addEventListener('pointerup', () => dragging=false);
 const keys = {};
@@ -822,7 +861,7 @@ window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 function setFollow(v){ follow=v; $('follow').setAttribute('aria-pressed', v); }
 $('follow').addEventListener('click', () => { setFollow(!follow); firstMove(); });
 let moved=false;
-function firstMove(){ if(moved) return; moved=true; setTimeout(() => $('how').style.opacity = 0, 3000); }
+function firstMove(){ if(moved) return; moved=true; $('walkhint').style.opacity = 0; setTimeout(() => $('walkhint').hidden = true, 700); }
 const routeTarget = () => routeIdx < ROUTES.length ? ROUTES[routeIdx][Math.min(wpIdx, ROUTES[routeIdx].length-1)] : null;
 function updatePlayer(dt){
   let vx=0, vy=0; if(keys.arrowup||keys.w) vy--; if(keys.arrowdown||keys.s) vy++; if(keys.arrowleft||keys.a) vx--; if(keys.arrowright||keys.d) vx++;
@@ -849,13 +888,14 @@ function updateSparrow(dt){
 }
 
 /* ================= story ================= */
-const tale = $('tale'); let lineTimer=null;
+const tale = $('tale'); let lineTimer=null, taleStep=null;
+$('taleIn').addEventListener('click', () => { if(taleStep) taleStep(); });
 function speak(place, lines, whisper, done){
   talking = !whisper; tale.classList.toggle('whisper', !!whisper);
   $('place').innerHTML = place ? `<b>${place.k}</b>${esc(place.name)}` : ''; $('place').hidden = !place;
-  let i=0; const step = () => { if(i>=lines.length){ tale.classList.remove('on'); talking=false; if(done) done(); return; }
-    $('line').textContent = lines[i++]; tale.classList.add('on'); lineTimer = setTimeout(step, Math.max(3600, lines[i-1].length*62)); };
-  clearTimeout(lineTimer); step();
+  let i=0; const step = () => { clearTimeout(lineTimer); if(i>=lines.length){ tale.classList.remove('on'); talking=false; taleStep=null; if(done) done(); return; }
+    $('line').textContent = lines[i++]; tale.classList.add('on'); lineTimer = setTimeout(step, Math.max(3000, lines[i-1].length*55)); };
+  taleStep = step; clearTimeout(lineTimer); step();
 }
 function linesFor(i){ const L = PLACES[i].lines.slice(); if(gift0 && i===3) L[1] = `${gift0.f || 'Your friend'} packed these two baskets for you. One is a treat. The other is not.`; return L; }
 function checkPlaces(){
@@ -863,30 +903,41 @@ function checkPlaces(){
   const p = PLACES[placeIdx]; if(Math.hypot(player.x-p.x, player.y-p.y) > 95) return;
   const idx = placeIdx; found.add(idx); updateFound(); chime(); if(idx===1) lungeT = 1;
   routeIdx = idx+1; wpIdx = 0; setFollow(false);
-  speak(p, linesFor(idx), false, () => { placeIdx = idx+1; updateFound(); if(idx === PLACES.length-1) openChoice(); });
+  if(idx === PLACES.length-1){ placeIdx = idx+1; updateFound(); setTimeout(() => openChoice(), 500); return; }
+  speak(p, linesFor(idx), false, () => { placeIdx = idx+1; updateFound(); });
 }
 function checkWhispers(){ if(talking) return; WHISPERS.forEach((w,i) => { if(!heard.has(i) && Math.hypot(player.x-w.x,player.y-w.y) < w.r){ heard.add(i); speak(null,[w.text],true); } }); }
 PLACES.forEach(p => { const li = document.createElement('li'); li.textContent = p.k; li.title = p.name; li.setAttribute('aria-label', p.name); $('foundList').appendChild(li); });
 function updateFound(){ [...$('foundList').children].forEach((li,i) => { li.classList.toggle('got', found.has(i)); li.classList.toggle('next', !found.has(i) && i===placeIdx); }); }
 updateFound();
 if(gift0) $('goalText').textContent = `Find the sparrow's den. ${gift0.f || 'Somebody'} left two baskets there for ${gift0.o || 'you'}. Choose the right one.`;
-if(touch) $('how').textContent = 'Tap anywhere to walk, or let the sparrow lead.';
+if(touch){ $('walkText').textContent = 'Tap anywhere to walk'; $('nudgeText').textContent = 'Tap to skip ahead'; }
 
-/* ================= the prologue ================= */
+/* ================= the cover and the story ================= */
 const who = gift0 && (gift0.f || 'Somebody');
-const LINES = gift0 ? [
-  `${who} hid two baskets for you in the bamboo woods.`,
-  'One is full of sweets. The other is full of something awful.',
-  "Walk through the town, find the sparrow's den, and pick one."
-] : [
-  'A sparrow has hidden two baskets in the bamboo woods.',
-  'One is full of sweets. The other is full of something awful.',
-  'Walk through the town, find her den, and pick one.'
+const LINES = [
+  'Long ago, a kind old man was nice to a little sparrow.',
+  'She thanked him with a woven basket. Inside was treasure.',
+  'His greedy wife wanted one too. She grabbed the biggest basket. Inside were monsters.',
+  ...(gift0 ? [
+    `Tonight ${who} has borrowed the sparrow's trick. They hid two baskets at her den in the bamboo woods, just for you.`,
+    'One is full of sweets. The other is full of something you will regret putting in your mouth.',
+    `Walk through the town, find the den, and open one. ${who} knows which is which.`
+  ] : [
+    'The sparrow still does this. Every Halloween she hides two baskets at her den, deep in the bamboo woods.',
+    'One is full of sweets. The other is full of something you will regret putting in your mouth.',
+    'Walk through the town, find her den, and open one. Be nice to the sparrow.'
+  ])
 ];
+// little drawings around the title
+const STICK = [['wr',-22,4,-12],['mk',94,0,10],['hc',-26,46,8],['du',98,44,-8],['cp',-16,86,-6],['sq',92,86,6],['km',-2,-22,-6],['pd',80,-24,5]];
+const narrow = innerWidth < 640;
+$('stickers').innerHTML = STICK.map(([id,x,y,r],i) => (x = narrow ? Math.min(80,Math.max(-2,x)) : x, y = narrow ? (y < 40 ? y - 6 : y + 8) : y, `<div class="sticker" style="left:${x}%;top:${y}%;rotate:${r}deg;animation-delay:${i*.35}s,${.3+i*.12}s">${candySVG(byId[id])}</div>`)).join('');
+if(gift0){ $('coverFrom').hidden = false; $('coverFrom').textContent = `${who} packed you two baskets.`; }
 let pstep = -1, typing = null, timer = null;
-$('nudgeText').textContent = touch ? 'Tap to skip ahead' : 'Click to skip ahead';
 function typeLine(i){
   const poem = $('poem'); poem.querySelectorAll('p').forEach(p => p.classList.add('past'));
+  while(poem.querySelectorAll('p').length > 1) poem.querySelector('p').remove();
   const p = document.createElement('p'); if(i === LINES.length-1) p.classList.add('goal');
   const span = document.createElement('span'), caret = document.createElement('i'); caret.className = 'caret';
   p.appendChild(span); p.appendChild(caret); poem.appendChild(p);
@@ -895,30 +946,34 @@ function typeLine(i){
   typing = () => { clearTimeout(timer); span.textContent = text; caret.remove(); typing = null; lineDone(); };
   const tick = () => { k++; span.textContent = text.slice(0,k); if(k % 3 === 0) keyTap();
     if(k >= text.length){ typing = null; setTimeout(() => caret.remove(), 600); return lineDone(); }
-    const ch = text[k-1]; timer = setTimeout(tick, /[.,!?]/.test(ch) ? 260 : 34 + Math.random()*26); };
-  timer = setTimeout(tick, 200);
+    const ch = text[k-1]; timer = setTimeout(tick, /[.,!?]/.test(ch) ? 280 : 32 + Math.random()*24); };
+  timer = setTimeout(tick, 250);
 }
-function lineDone(){ clearTimeout(timer); timer = setTimeout(advance, pstep === LINES.length-1 ? 1300 : 900); }
+function lineDone(){
+  clearTimeout(timer);
+  if(pstep === LINES.length-1){ const b = document.createElement('button'); b.className='btn go'; b.type='button'; b.id='begin'; b.textContent='Find the den';
+    b.addEventListener('click', e => { e.stopPropagation(); begin(); }); $('poem').appendChild(b); $('nudge').hidden = true; return; }
+  timer = setTimeout(advance, 1100);
+}
 function advance(){
+  if(pstep < 0) return;
   if(typing){ typing(); return; }
   clearTimeout(timer);
-  if(pstep < LINES.length-1){ pstep++; typeLine(pstep); hopSparrow(); chirp(); return; }
-  if(pstep === LINES.length-1){
-    pstep++; const poem = $('poem'); poem.style.transition='opacity .6s'; poem.style.opacity = 0;
-    setTimeout(() => { poem.style.opacity = 1; poem.innerHTML = `<div class="titlecard"><h1 aria-label="Shita-kiri Suzume"><span>舌</span><span>切</span><span>り</span><span>雀</span></h1>
-      <p class="en">The Sparrow's Baskets</p><p class="goal">Find the den. Pick the sweets. Avoid the awful one.</p>
-      <button class="btn" type="button" id="begin">Start looking</button></div>`; $('nudge').hidden = true;
-      $('begin').addEventListener('click', e => { e.stopPropagation(); begin(); }); chime(); }, 650);
-  }
+  if(pstep < LINES.length-1){ pstep++; typeLine(pstep); hopSparrow(); if(pstep % 2 === 0) chirp(); }
 }
-setTimeout(advance, 600);
-$('prologue').addEventListener('click', e => { if(e.target.closest('#skip') || e.target.closest('#begin')) return; audioKick(); advance(); });
-window.addEventListener('keydown', e => { if(started) return; if([' ','enter','arrowdown','arrowright','pagedown'].includes(e.key.toLowerCase())){ e.preventDefault(); if(pstep > LINES.length-1) begin(); else advance(); } });
-$('skip').addEventListener('click', e => { e.stopPropagation(); begin(); });
+function openStory(){
+  if(pstep >= 0) return; startSound(); pstep = 0;
+  $('cover').classList.add('gone');
+  setTimeout(() => { $('cover').hidden = true; $('poem').hidden = false; $('nudge').hidden = false; typeLine(0); }, 600);
+}
+$('openStory').addEventListener('click', e => { e.stopPropagation(); openStory(); });
+$('prologue').addEventListener('click', e => { if(e.target.closest('#skip') || e.target.closest('#begin') || e.target.closest('#openStory')) return; startSound(); if(pstep < 0) openStory(); else advance(); });
+window.addEventListener('keydown', e => { if(started) return; if([' ','enter','arrowdown','arrowright','pagedown'].includes(e.key.toLowerCase())){ e.preventDefault(); if(pstep < 0) openStory(); else if(pstep >= LINES.length-1 && !typing) begin(); else advance(); } });
+$('skip').addEventListener('click', e => { e.stopPropagation(); startSound(); begin(); });
 function begin(){
   if(started) return; started = true; $('prologue').classList.add('leaving'); $('cursorSparrow').style.opacity = 0;
   setTimeout(() => { $('prologue').hidden = true; $('cursorSparrow').hidden = true; }, 1300);
-  setHud(true); $('goalbox').style.opacity = 1;
+  setHud(true); $('goalbox').style.opacity = 1; $('walkhint').hidden = false;
 }
 // a sparrow that follows your cursor during the prologue
 const cs = $('cursorSparrow'), csp = {x:innerWidth*.62, y:innerHeight*.3, tx:innerWidth*.62, ty:innerHeight*.3, hop:0, face:1};
@@ -938,16 +993,19 @@ let set=null, treatAt=0, picked=false, previewing=false, giftNow=gift0;
 function setHud(on){ ['goalbox','tools'].forEach(id => $(id).style.visibility = on ? 'visible' : 'hidden'); }
 setHud(false);
 function openChoice(g = giftNow, isPreview=false){
+  $('walkhint').hidden = true;
   giftNow=g; previewing=isPreview; picked=false; choiceOpen=true; setFollow(false);
   set = g ? {t:g.t,k:g.k} : {t:pickOne(TREATS).id, k:pickOne(TRICKS).id}; treatAt = Math.random()<.5 ? 0 : 1;
   $('choiceNote').hidden = !(g && g.n); $('choiceNote').textContent = g && g.n ? `${g.f || 'Your friend'} left a note: “${g.n}”` : '';
-  ['bk0','bk1'].forEach(id => { const b=$(id); b.disabled=false; b.className='bk'; });
+  ['bk0','bk1'].forEach(id => { const b=$(id); b.disabled=false; b.className='bk invite'; });
+  $('choiceLead').textContent = g ? `${g.f || 'Your friend'} left two baskets here for you. One is full of sweets. One is full of something awful.` : 'She holds out two baskets. One is full of sweets. One is full of something awful.';
+  document.querySelector('.pickme').style.visibility='visible';
   $('choice').hidden=false; $('result').hidden=true; $('packer').hidden=true; setHud(false);
 }
 $('choice').addEventListener('click', e => {
   const b = e.target.closest('.bk'); if(!b || b.disabled || picked) return;
   picked = true; const i = +b.dataset.i, good = i === treatAt;
-  $('bk0').disabled = $('bk1').disabled = true; $(i?'bk0':'bk1').classList.add('gone'); b.classList.add('shake'); rattle();
+  $('bk0').disabled = $('bk1').disabled = true; $(i?'bk0':'bk1').classList.add('gone'); b.classList.remove('invite'); b.classList.add('shake'); document.querySelector('.pickme').style.visibility='hidden'; rattle();
   setTimeout(() => { b.classList.remove('shake'); b.classList.add('open'); const r = b.getBoundingClientRect(); good ? bless(r) : curse(r); }, 650);
   setTimeout(() => showResult(i, good), good ? 1500 : 1900);
 });
@@ -1021,7 +1079,7 @@ function openPacker(){ $('result').hidden=true; $('choice').hidden=true; $('pack
 let lastGift=null;
 $('packForm').addEventListener('submit', e => { e.preventDefault(); const f=e.target;
   lastGift = {t:f.treat.value, k:f.trick.value, f:f.from.value.trim().slice(0,24), o:f.to.value.trim().slice(0,24), n:f.note.value.trim().slice(0,90)};
-  const url = shareUrl(enc(lastGift)), msg = `${lastGift.o ? lastGift.o + ', I' : 'I'} left you two baskets at the sparrow's den. One is a treat and one is truly disgusting, and you only get to open one. Find it.`;
+  const url = shareUrl(enc(lastGift)), msg = `${lastGift.o ? lastGift.o + ', I' : 'I'} left you two baskets at the sparrow's den. Trick or tsuzura: one is sweets, one is truly disgusting, and you only get to open one.`;
   $('shareMsg').textContent=msg; $('shareUrl').value=url; $('done').dataset.msg = msg+' '+url; $('done').hidden=false; $('done').scrollIntoView({block:'nearest', behavior:reduce?'auto':'smooth'}); chime(); });
 async function copy(text, btn, fb){ const o=btn.textContent; try{ await navigator.clipboard.writeText(text); btn.textContent='Copied'; }catch(err){ if(fb){ fb.focus(); fb.select(); } btn.textContent='Selected. Press Ctrl+C or ⌘C'; } setTimeout(() => btn.textContent=o, 2200); }
 $('copyMsg').addEventListener('click', e => copy($('done').dataset.msg, e.currentTarget, $('shareUrl')));
@@ -1030,7 +1088,8 @@ $('preview').addEventListener('click', () => { if(lastGift){ $('packer').hidden=
 $('backTown').addEventListener('click', () => { $('packer').hidden=true; choiceOpen=false; setHud(true); });
 
 /* ================= sound ================= */
-let ac=null, master=null, soundOn=false;
+let ac=null, master=null, soundOn=true;
+function startSound(){ if(!soundOn) return; try{ if(!ac) initAudio(); ac.resume(); master.gain.setTargetAtTime(.8, ac.currentTime, .3); }catch(e){} }
 function audioKick(){ if(ac && ac.state==='suspended') ac.resume(); }
 function initAudio(){ ac = new (window.AudioContext||window.webkitAudioContext)(); master = ac.createGain(); master.gain.value=0; master.connect(ac.destination);
   const len=ac.sampleRate*3, buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0); let l=0; for(let i=0;i<len;i++){ l=(l+.02*(Math.random()*2-1))/1.02; d[i]=l*3; }

@@ -1,12 +1,12 @@
-# The Sparrow's Baskets 舌切り雀
+# Trick or Tsuzura 舌切り雀
 
-A Halloween trick-or-treat for grown-ups, based on the Japanese folktale *Shita-kiri Suzume* (The Tongue-Cut Sparrow).
+A Halloween trick-or-treat for grown-ups, based on the Japanese folktale *Shita-kiri Suzume* (The Tongue-Cut Sparrow). A *tsuzura* (つづら) is the woven basket in the old story: one held treasure, one held monsters.
 
 ![The Sparrow's Inn](og.png)
 
 ## How it plays
 
-1. **Read the prologue.** Three short lines type themselves out, with a sparrow following your cursor: a sparrow has hidden two baskets in the bamboo woods, one full of sweets and one full of something awful, so walk through the town, find her den, and pick one.
+1. **Hear the story.** A cover page with little candy drawings, then a typed retelling of the folktale: the kind old man, the treasure, the greedy wife, the monsters, and the sparrow who still hides two baskets every Halloween.
 2. **Explore.** Walk a small town at night, drawn in wobbly ink on paper, then leave through the north gate into the bamboo woods. Click or tap where you want to walk (or use the arrow keys). The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, or you can let her lead with *Follow the sparrow*.
 3. **Find four places.** The story is told by the crossroads, Lantern Lane, the edge of town, and the sparrow's den deep in the woods. A few hidden corners have their own small surprises.
 4. **Pick.** At the den, two identical baskets wait. One holds a treat. The other holds something you will regret.
@@ -22,7 +22,7 @@ It's a single static `index.html` with no build step, no backend, and no depende
 
 - The town is drawn on a `<canvas>` from code with a deliberately unsteady hand: every line wobbles and overshoots, fills sit slightly off their outlines, and a paper grain sits over everything. The wobble is seeded per object so drawings stay still as the camera moves. A low-resolution fog map tracks what you have uncovered.
 - A gift is encoded into the link's hash (`#b.<base64url JSON>`), so nothing is stored anywhere. Share links are built from the page's own address, so they work wherever you host it.
-- Sound (wind chimes, rain, a low hum) is generated with Web Audio and stays off until you turn it on.
+- Sound (wind, chimes, footsteps, typing) is generated with Web Audio. It is on by default and starts on your first click, as browsers require.
 - Motion is reduced when the visitor has `prefers-reduced-motion` turned on.
 
 ## Run it locally
