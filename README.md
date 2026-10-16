@@ -18,7 +18,7 @@ Treats are real pan-Asian candy: White Rabbit, Hi-Chew, Botan Rice Candy, Koala'
 
 ## How it works
 
-It's a single static `index.html` with no build step, no backend, and no dependencies besides Google Fonts (the title font is embedded).
+It's a single static `index.html` with no build step, no backend, and no dependencies besides Google Fonts.
 
 - The town is drawn on a `<canvas>` from code with a deliberately unsteady hand: every line wobbles and overshoots, fills sit slightly off their outlines, and a paper grain sits over everything. The wobble is seeded per object so drawings stay still as the camera moves. A low-resolution fog map tracks what you have uncovered.
 - A gift is encoded into the link's hash (`#b.<base64url JSON>`), so nothing is stored anywhere. Share links are built from the page's own address, so they work wherever you host it.
@@ -50,4 +50,4 @@ For the link preview image to show up in iMessage, WhatsApp, and similar apps, c
 
 Based on 舌切り雀 (Shita-kiri Suzume), a traditional Japanese folktale.
 
-Title lettering uses [Darumadrop One](https://fonts.google.com/specimen/Darumadrop+One) by Maniackers Design (SIL Open Font License), embedded in the page.
+Title lettering uses [Fraunces](https://fonts.google.com/specimen/Fraunces) and [Shippori Mincho](https://fonts.google.com/specimen/Shippori+Mincho) from Google Fonts (SIL Open Font License).
