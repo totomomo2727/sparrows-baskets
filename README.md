@@ -6,7 +6,7 @@ A Halloween trick-or-treat for grown-ups, based on the Japanese folktale *Shita-
 
 ## How it plays
 
-1. **Walk.** Scroll to walk through rain-soaked neon back alleys. The scene unrolls right to left like an emaki handscroll, past a neon torii, a lantern lane where one lantern is watching you, a crossroads of spider lilies and Jizō statues, and a strip of old bamboo.
+1. **Read.** The story is told like a scrolling picture-book. The illustration stays pinned while the narration scrolls past, each chapter opens on black, close-up panels drift over the scene, and a few lines trigger moments in the picture. There is a *Read for me* option that scrolls for you and slows down wherever there is text.
 2. **Pick.** At the Sparrow's Inn, two identical baskets wait for you. One holds a treat, the other holds a trick. You get one.
 3. **Pack.** Choose a treat and a trick for a friend, add a note, and tie the baskets. You get a link to send.
 4. **Pass it on.** Your friend walks the same alleys, picks one of your baskets, gets a reply to send back, and then packs two for someone else.
