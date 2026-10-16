@@ -6,12 +6,13 @@ A Halloween trick-or-treat for grown-ups, based on the Japanese folktale *Shita-
 
 ## How it plays
 
-1. **Explore.** The page opens straight into a small town at night, drawn in wobbly ink on paper. Click or tap where you want to walk (or use the arrow keys). The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, or you can let her lead with *Follow the sparrow*.
-2. **Find three places.** The story is told by the crossroads, Lantern Lane, and the Sparrow's Inn. A few hidden corners have their own small surprises.
-3. **Pick.** At the inn, two identical baskets wait. One holds a treat. The other holds something you will regret.
+1. **Read the prologue.** Six short lines ink in one at a time as you click, tap or scroll, with a sparrow following your cursor. The goal is clear from the start: find the sparrow's den, then choose the right basket.
+2. **Explore.** Walk a small town at night, drawn in wobbly ink on paper, then leave through the north gate into the bamboo woods. Click or tap where you want to walk (or use the arrow keys). The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, or you can let her lead with *Follow the sparrow*.
+3. **Find four places.** The story is told by the crossroads, Lantern Lane, the edge of town, and the sparrow's den deep in the woods. A few hidden corners have their own small surprises.
+4. **Pick.** At the den, two identical baskets wait. One holds a treat. The other holds something you will regret.
    - A treat lights up the whole town with fireworks and a flock of sparrows.
    - A trick kills every lantern, fills the screen with green stink and flies, and sends a laughing umbrella yokai to gloat.
-4. **Pack.** Choose a treat and a trick for a friend, add a note, and tie the baskets. You get a link to send, and they go through the same town.
+5. **Pack.** Choose a treat and a trick for a friend, add a note, and tie the baskets. You get a link to send, and they go through the same town.
 
 Treats are real pan-Asian candy: White Rabbit, Hi-Chew, Botan Rice Candy, Koala's March, Matcha KitKat, and Choco Pie. Tricks are not: smelly-foot gummies, booger jelly beans, dried squid taffy, pigeon-drop bonbons, earwax caramels, and garbage-day durian.
 
@@ -43,7 +44,7 @@ For the link preview image to show up in iMessage, WhatsApp, and similar apps, c
 ## Customizing
 
 - **Candy:** edit the `TREATS` and `TRICKS` arrays near the top of the script. Each entry has a name, origin, wrapper colors, a kanji for the wrapper, and a tasting note.
-- **Places and story lines:** edit `PLACES`, `ROUTES` (the sparrow's path between places), and `WHISPERS` (hidden corners). The town is 1800 by 1800 units.
+- **Places and story lines:** edit `PLACES`, `ROUTES` (the sparrow's path between places), and `WHISPERS` (hidden corners). The world is 1800 by 2400 units: the woods are the top 1050, the town is below.
 
 ## Credits
 
