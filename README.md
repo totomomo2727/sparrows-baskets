@@ -50,4 +50,4 @@ For the link preview image to show up in iMessage, WhatsApp, and similar apps, c
 
 Based on 舌切り雀 (Shita-kiri Suzume), a traditional Japanese folktale.
 
-Title lettering uses [Fraunces](https://fonts.google.com/specimen/Fraunces) and [Shippori Mincho](https://fonts.google.com/specimen/Shippori+Mincho) from Google Fonts (SIL Open Font License).
+Title lettering uses Nafta by [Krisjanis Mezulis](https://wildpicks.design/product/nafta-free-font/) (embedded in the page). Supporting text uses [Fraunces](https://fonts.google.com/specimen/Fraunces) and [Shippori Mincho](https://fonts.google.com/specimen/Shippori+Mincho) from Google Fonts (SIL Open Font License).
