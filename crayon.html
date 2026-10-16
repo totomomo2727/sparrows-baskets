@@ -559,6 +559,34 @@ body{background:#ebe9e5!important}
 
 .tale .line,.tale .line.swap{opacity:1!important;transition:none!important}
 #cursorSparrow{filter:none!important;width:72px!important}
+
+/* ===== fixes round: buttons, story, den, cover ===== */
+.btn,#begin,.layer .btn{background:#fffdf7!important;color:#141414!important;border:2.5px solid #141414!important;border-radius:255px 15px 225px 15px/15px 225px 15px 255px!important;
+  font-family:"Gaegu",cursive!important;font-weight:700!important;font-size:1.3rem!important;letter-spacing:.02em!important;text-transform:none!important;padding:.5em 1.6em .6em!important;box-shadow:3px 4px 0 #141414!important;text-shadow:none!important}
+.btn:hover,#begin:hover{transform:translate(-1px,-1px) rotate(-1deg)!important;box-shadow:5px 6px 0 #141414!important;background:#f6d23a!important}
+#begin{margin-top:2rem!important;background:#f6d23a!important}
+.cover .def{max-width:32ch!important;line-height:1.45!important}
+.cover .def .tz{display:block;margin:0 auto .9rem;max-width:30ch;font-size:1rem!important;font-weight:400!important;color:#3a3632!important}
+.cover .def .tz b{font-weight:700;background:linear-gradient(transparent 55%,rgba(246,210,58,.7) 55%)}
+.poem{width:min(36rem,calc(100% - 40px))!important;text-align:center!important;gap:.9rem!important}
+.poem p{text-wrap:pretty!important;line-height:1.3!important}
+.poem p .ghost{color:transparent!important;text-shadow:none!important}
+.poem p .caret{display:inline-block;width:2px;height:.9em;margin:0 1px -.08em;background:#c23a2c}
+.poem p.past{font-size:1rem!important;font-weight:400!important;color:#8a857c!important;line-height:1.4!important}
+#choice{background:rgba(235,233,229,.94)!important}
+body:has(#choice:not([hidden])) #tale, body:has(#result:not([hidden])) #tale{display:none!important}
+.choice-in h2{background:none!important;-webkit-background-clip:border-box!important;color:#141414!important;font-family:"Gaegu",cursive!important;font-weight:700!important;font-size:clamp(2.6rem,1.6rem + 3.4vw,4.4rem)!important;letter-spacing:.03em!important;line-height:1!important}
+.choice-in h2::after{content:'';display:block;height:12px;margin:.15em auto 0;width:70%;background:#f6d23a;border-radius:40% 60% 50% 50%;opacity:.8;rotate:-1deg}
+.choice-in .note{color:#3a3632!important;font-size:1.15rem!important}
+.choice-in .pickme{color:#141414!important;font-size:1.45rem!important}
+.choice-in .pickme svg path{stroke:#141414!important}
+.bk span{font-family:"Gaegu",cursive!important;font-weight:700;color:#141414!important;font-size:1.6rem!important}
+.res h2{font-family:"Gaegu",cursive!important;font-weight:700!important;background:none!important;color:#141414!important}
+.res .card{background:#fffdf7!important;border:2.5px solid #141414!important;border-radius:255px 15px 225px 15px/15px 225px 15px 255px!important;box-shadow:4px 5px 0 #141414!important}
+#result{background:rgba(235,233,229,.9)!important}
+
+#fx{filter:none!important;z-index:30!important}
+#result{background:rgba(235,233,229,.72)!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -600,7 +628,7 @@ body{background:#ebe9e5!important}
       </div>
     </div>
     <p class="from" id="coverFrom" hidden></p>
-    <p class="def">Two baskets. One holds sweets, one holds something you will regret.</p>
+    <p class="def"><span class="tz"><b>tsuzura</b> (つづら) is a woven basket. In an old Japanese tale, a sparrow gives one to every guest.</span>Two baskets wait at her den. One holds sweets. One holds something you will regret.</p>
     <div class="minibaskets" id="minis"></div>
       <p class="minihint" id="minihint">psst, try opening one</p>
     <button class="btn" type="button" id="openStory">Hear the story</button>
@@ -617,7 +645,7 @@ body{background:#ebe9e5!important}
 
 <section class="layer" id="choice" hidden aria-labelledby="choiceTitle">
   <div class="choice-in">
-    <h2 id="choiceTitle">You found the sparrow's den.</h2>
+    <h2 id="choiceTitle">yOu fOunD thE spaRRow's dEn!</h2>
     <p class="note" id="choiceLead">She holds out two baskets. One is full of sweets. One is full of something awful.</p>
     <p class="note" id="choiceNote" hidden></p>
     <p class="pickme"><svg class="rough" viewBox="0 0 50 50" aria-hidden="true"><path d="M8 8 C30 6 40 18 36 40 M26 32 L36 42 L44 30" fill="none" stroke="#ffd9a0" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Click one basket to open it</p>
@@ -1209,7 +1237,12 @@ function drawWorld(){
   ctx.lineCap='round'; ctx.lineJoin='round';
   const vw=VW/K, vh=VH/K, x0=cam.x-vw/2-160, x1=cam.x+vw/2+160, y0=cam.y-vh/2-260, y1=cam.y+vh/2+420;
   const sx0=Math.max(0,x0), sy0=Math.max(0,y0), sx1=Math.min(WW,x1), sy1=Math.min(WH,y1);
-  if(sx1>sx0 && sy1>sy0) {}
+  if(y0 < TOWN_Y+60){ const P=ROUTES[3]; RAWCOL=true; ctx.lineCap='round'; ctx.lineJoin='round';
+    const trace = (off) => { ctx.beginPath(); ctx.moveTo(P[0][0]+off,P[0][1]); for(let i=1;i<P.length-1;i++){ const mx=(P[i][0]+P[i+1][0])/2, my=(P[i][1]+P[i+1][1])/2; ctx.quadraticCurveTo(P[i][0]+off,P[i][1],mx+off,my); } ctx.lineTo(P[P.length-1][0]+off,P[P.length-1][1]); };
+    [[58,'rgba(232,196,132,.55)',0],[46,'rgba(222,178,108,.5)',3],[34,'rgba(240,210,150,.45)',-4]].forEach(([w,c,o]) => { ctx.strokeStyle=c; ctx.lineWidth=w; trace(o); ctx.stroke(); });
+    ctx.strokeStyle='#1f1d1b'; ctx.lineWidth=2; ctx.setLineDash([14,10]); trace(-30); ctx.stroke(); trace(30); ctx.stroke(); ctx.setLineDash([]);
+    RAWCOL=false;
+    setSeed(77); for(let i=0;i<P.length-1;i++){ const [ax,ay]=P[i],[bx,by]=P[i+1], n=Math.max(2,Math.hypot(bx-ax,by-ay)/46|0); for(let k=0;k<n;k++){ const u=(k+.5)/n; blob(ax+(bx-ax)*u+jj(0,0,6), ay+(by-ay)*u+jj(0,0,6), 7, null, '#1f1d1b', 1.3, 4.5); } } }
   steps.forEach(m => { setSeed(m.x); blob(m.x, m.y, 2.2*(1-m.age)+.5, `rgba(255,200,120,${.7*(1-m.age)})`, null); });
   if(placeIdx < PLACES.length){ const p = PLACES[placeIdx]; setSeed(p.x); wash(p.x,p.y,64+Math.sin(t*2)*6,'rgba(255,190,110,.12)'); }
   const list = [], vis = (x,y,top=120) => x>x0 && x<x1 && y>y0 && y-top<y1;
@@ -1360,12 +1393,13 @@ function typeLine(i){
   const poem = $('poem'); poem.querySelectorAll('p').forEach(p => p.classList.add('past'));
   while(poem.querySelectorAll('p').length > 1) poem.querySelector('p').remove();
   const p = document.createElement('p'); if(i === LINES.length-1) p.classList.add('goal');
-  const span = document.createElement('span'), caret = document.createElement('i'); caret.className = 'caret';
-  p.appendChild(span); p.appendChild(caret); poem.appendChild(p);
+  const span = document.createElement('span'), caret = document.createElement('i'), ghost = document.createElement('span'); caret.className = 'caret'; ghost.className = 'ghost';
+  p.appendChild(span); p.appendChild(caret); p.appendChild(ghost); poem.appendChild(p);
   const text = LINES[i]; let k = 0;
-  if(reduce){ span.textContent = text; caret.remove(); return lineDone(); }
-  typing = () => { clearTimeout(timer); span.textContent = text; caret.remove(); typing = null; lineDone(); };
-  const tick = () => { k++; span.textContent = text.slice(0,k); if(k % 3 === 0) keyTap();
+  ghost.textContent = text;
+  if(reduce){ span.textContent = text; ghost.textContent=''; caret.remove(); return lineDone(); }
+  typing = () => { clearTimeout(timer); span.textContent = text; ghost.textContent=''; caret.remove(); typing = null; lineDone(); };
+  const tick = () => { k++; span.textContent = text.slice(0,k); ghost.textContent = text.slice(k); if(k % 3 === 0) keyTap();
     if(k >= text.length){ typing = null; setTimeout(() => caret.remove(), 600); return lineDone(); }
     const ch = text[k-1]; timer = setTimeout(tick, /[.,!?]/.test(ch) ? 280 : 32 + Math.random()*24); };
   timer = setTimeout(tick, 250);
@@ -1433,11 +1467,13 @@ $('choice').addEventListener('click', e => {
 const parts = [];
 function bless(r){
   const cx=r.left+r.width/2, cy=r.top+r.height*.25; boost=1; blessWave=0; blessChord();
-  $('tint').style.mixBlendMode='screen'; $('tint').style.background='radial-gradient(60% 60% at 50% 55%,rgba(255,190,100,.45),rgba(255,150,60,.12) 60%,transparent)'; $('tint').style.opacity=1;
+  $('tint').style.opacity=0;
   if(reduce) return;
-  for(let i=0;i<60;i++){ const a=-Math.PI/2+(Math.random()-.5)*1.6, v=300+Math.random()*650; parts.push({k:'spark',x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1.4+Math.random(),age:0,c:Math.random()<.5?'#ffd27a':'#f08a4a'}); }
-  for(let i=0;i<22;i++) parts.push({k:'bird',x:cx+(Math.random()-.5)*60,y:cy,vx:(Math.random()-.5)*260,vy:-170-Math.random()*240,life:3.2,age:0,ph:Math.random()*6,s:.9+Math.random()*.7});
-  [0,450,950,1450,2000].forEach(ms => setTimeout(() => firework(VW*(.2+Math.random()*.6), VH*(.14+Math.random()*.28)), ms));
+  const RAIN=['#e8453c','#f29a2e','#f6d23a','#56b45c','#3f95d8','#7a5cc4','#e66ba8'];
+  const shower = (n,fromTop) => { for(let i=0;i<n;i++){ const a=-Math.PI/2+(Math.random()-.5)*2.2, v=fromTop?0:380+Math.random()*620;
+      parts.push({k:'conf',x:fromTop?Math.random()*VW:cx,y:fromTop?-20-Math.random()*VH*.4:cy,vx:fromTop?(Math.random()-.5)*60:Math.cos(a)*v,vy:fromTop?60+Math.random()*80:Math.sin(a)*v,
+        life:3.4+Math.random()*1.6,age:0,c:RAIN[i%RAIN.length],w:6+Math.random()*7,h:3+Math.random()*4,r:Math.random()*6,vr:(Math.random()-.5)*12,sw:Math.random()*6}); } };
+  shower(140,false); setTimeout(() => shower(160,true), 350); setTimeout(() => shower(120,true), 1300);
 }
 function firework(x,y){ pop(); const c=['#ffd27a','#f2735a','#f6b6d0','#bfe2f2'][Math.floor(Math.random()*4)];
   for(let i=0;i<46;i++){ const a=i/46*Math.PI*2, v=150+Math.random()*150; parts.push({k:'spark',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1.5+Math.random()*.5,age:0,c,g:70}); } }
@@ -1481,6 +1517,8 @@ function fxLine(x1,y1,x2,y2,w,col){ fx.strokeStyle=col; fx.lineWidth=w; fx.begin
 function drawFx(dt){
   fx.setTransform(DPR,0,0,DPR,0,0); fx.clearRect(0,0,VW,VH); fx.lineCap='round';
   for(let i=parts.length-1;i>=0;i--){ const p=parts[i]; p.age+=dt; if(p.age>p.life){ parts.splice(i,1); continue; } const a=1-p.age/p.life;
+    if(p.k==='conf'){ p.vy += 260*dt; p.vx *= .985; p.vy = Math.min(p.vy, 160); p.sw += dt*4; p.x += (p.vx + Math.sin(p.sw)*40)*dt; p.y += p.vy*dt; p.r += p.vr*dt;
+      fx.save(); fx.translate(p.x,p.y); fx.rotate(p.r); fx.scale(1, Math.abs(Math.cos(p.sw*1.7))*.8+.2); fx.globalAlpha=Math.min(1,a*3); fx.fillStyle=p.c; fx.fillRect(-p.w/2,-p.h/2,p.w,p.h); fx.restore(); fx.globalAlpha=1; continue; }
     if(p.k==='spark'){ p.vy+=(p.g||380)*dt; p.vx*=.985; p.vy*=.985; const px=p.x, py=p.y; p.x+=p.vx*dt; p.y+=p.vy*dt; fx.globalAlpha=a; fxLine(px-p.vx*.03,py-p.vy*.03,p.x,p.y,2.4,p.c); fx.globalAlpha=1; }
     if(p.k==='bird'){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy-=40*dt; p.ph+=dt*18; fx.save(); fx.translate(p.x,p.y); fx.scale(p.s*(p.vx<0?-1:1),p.s); fx.globalAlpha=Math.min(1,a*2);
       fx.strokeStyle='#241b17'; fx.lineWidth=1.4; fx.fillStyle='#9a5e3a'; fx.beginPath(); fx.ellipse(0,0,8,5,0,0,7); fx.fill(); fx.stroke(); fx.fillStyle='#7e4026'; fx.beginPath(); fx.arc(7,-3,4,0,7); fx.fill(); fx.stroke();
