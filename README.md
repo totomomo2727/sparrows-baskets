@@ -20,7 +20,7 @@ Treats are real pan-Asian candy: White Rabbit, Hi-Chew, Botan Rice Candy, Koala'
 
 It's a single static `index.html` with no build step, no backend, and no dependencies besides Google Fonts.
 
-- The town is drawn on a `<canvas>` from code with a deliberately unsteady hand: every line wobbles and overshoots, fills sit slightly off their outlines, and a paper grain sits over everything. The wobble is seeded per object so drawings stay still as the camera moves. A low-resolution fog map tracks what you have uncovered.
+- The town is drawn on a `<canvas>` from code with a deliberately unsteady hand: every line wobbles and overshoots, fills sit slightly off their outlines, and a paper grain sits over everything. The wobble is seeded per object so drawings stay still as the camera moves. A low-resolution reveal map tracks what you have uncovered: each patch is first sketched in pale sepia ink, then washed with watercolour a moment later, spreading out from wherever you walk.
 - A gift is encoded into the link's hash (`#b.<base64url JSON>`), so nothing is stored anywhere. Share links are built from the page's own address, so they work wherever you host it.
 - Sound (wind, chimes, footsteps, typing) is generated with Web Audio. It is on by default and starts on your first click, as browsers require.
 - Motion is reduced when the visitor has `prefers-reduced-motion` turned on.
