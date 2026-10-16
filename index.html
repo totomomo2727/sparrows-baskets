@@ -123,9 +123,14 @@ canvas{display:block}
 .bk.invite:nth-child(1){animation:invite 2.4s ease-in-out infinite}
 .bk.invite:nth-child(2){animation:invite 2.4s 1.2s ease-in-out infinite}
 @keyframes invite{0%,70%,100%{transform:translateY(0) rotate(0)}78%{transform:translateY(-14px) rotate(-4deg)}86%{transform:translateY(0) rotate(3deg)}}
-.tale-in{pointer-events:auto;cursor:pointer}
-.tale .more{display:block;margin-top:4px;font-size:.85rem;color:#7a6a58}
-.tale.whisper .more{color:var(--pencil)}
+.tale-in{pointer-events:none}
+.tale .dots{display:flex;justify-content:center;gap:6px;margin-top:8px;min-height:6px}
+.tale .dots i{width:6px;height:6px;border-radius:50%;background:#7a6a58;opacity:.3;transition:opacity .3s}
+.tale .dots i.on{opacity:.9}
+.tale .dots:has(i:only-child){display:none}
+.tale.whisper .dots i{background:var(--pencil)}
+.tale .line{transition:opacity .35s}
+.tale .line.swap{opacity:0}
 #prologue{position:fixed;inset:0;z-index:20;display:grid;place-items:center;cursor:pointer;overflow:hidden;
   background:radial-gradient(70% 60% at 50% 50%,rgba(31,29,39,.55),rgba(24,22,30,.94) 75%);transition:opacity 1.2s}
 #prologue.leaving{opacity:0;pointer-events:none}
@@ -323,7 +328,7 @@ legend{padding:0;margin:0 0 1rem;font-size:clamp(1.25rem,1.1rem + .8vw,1.7rem);f
   <p class="g" id="goalText">Find the sparrow's den in the bamboo woods. Open the basket with the sweets.</p>
   <ol id="foundList" aria-label="The way to the den"></ol>
 </div>
-<div class="hud tale" id="tale" aria-live="polite"><div class="tale-in" id="taleIn"><p class="place" id="place"></p><p class="line" id="line"></p><span class="more">tap to continue</span></div></div>
+<div class="hud tale" id="tale" aria-live="polite"><div class="tale-in" id="taleIn"><p class="place" id="place"></p><p class="line" id="line"></p><span class="dots" id="taleDots" aria-hidden="true"></span></div></div>
 <div class="hud tools" id="tools">
   <button type="button" id="follow" aria-pressed="false">Follow the sparrow</button>
   <button type="button" id="sound" aria-pressed="true">Sound</button>
@@ -879,7 +884,7 @@ function drawWorld(){
   const sx0=Math.max(0,x0), sy0=Math.max(0,y0), sx1=Math.min(WW,x1), sy1=Math.min(WH,y1);
   if(sx1>sx0 && sy1>sy0) ctx.drawImage(ground, sx0, sy0, sx1-sx0, sy1-sy0, sx0, sy0, sx1-sx0, sy1-sy0);
   steps.forEach(m => { setSeed(m.x); blob(m.x, m.y, 2.2*(1-m.age)+.5, `rgba(255,200,120,${.7*(1-m.age)})`, null); });
-  if(placeIdx < PLACES.length && !talking){ const p = PLACES[placeIdx]; setSeed(p.x); wash(p.x,p.y,64+Math.sin(t*2)*6,'rgba(255,190,110,.12)'); }
+  if(placeIdx < PLACES.length){ const p = PLACES[placeIdx]; setSeed(p.x); wash(p.x,p.y,64+Math.sin(t*2)*6,'rgba(255,190,110,.12)'); }
   const list = [], vis = (x,y,top=120) => x>x0 && x<x1 && y>y0 && y-top<y1;
   buildings.forEach(b => { if(b.x+b.w+60 > x0 && b.x-60 < x1 && b.y+b.d > y0 && b.y-b.h-100 < y1) list.push([b.y+b.d, () => building(b), b.seed]); });
   gardens.forEach(gd => { if(vis(gd.x,gd.y)) list.push([gd.y+gd.r*.4, () => garden(gd)]); });
@@ -922,7 +927,7 @@ const routeTarget = () => routeIdx < ROUTES.length ? ROUTES[routeIdx][Math.min(w
 function updatePlayer(dt){
   let vx=0, vy=0; if(keys.arrowup||keys.w) vy--; if(keys.arrowdown||keys.s) vy++; if(keys.arrowleft||keys.a) vx--; if(keys.arrowright||keys.d) vx++;
   if(vx||vy){ setFollow(false); player.tx=player.x+vx*50; player.ty=player.y+vy*50; }
-  if(follow && !talking){ const wp = routeTarget(); if(wp){ player.tx=wp[0]; player.ty=wp[1]; } }
+  if(follow){ const wp = routeTarget(); if(wp){ player.tx=wp[0]; player.ty=wp[1]; } }
   const dx=player.tx-player.x, dy=player.ty-player.y, d=Math.hypot(dx,dy);
   player.moving = d > 3 && !choiceOpen;
   if(player.moving){ const st=Math.min(160*dt,d), nx=player.x+dx/d*st, ny=player.y+dy/d*st;
@@ -934,7 +939,7 @@ function updatePlayer(dt){
 }
 function updateSparrow(dt){
   let tx, ty;
-  if(placeIdx < PLACES.length && !talking){ const wp = routeTarget() || [PLACES[placeIdx].x, PLACES[placeIdx].y]; tx=wp[0]; ty=wp[1];
+  if(placeIdx < PLACES.length){ const wp = routeTarget() || [PLACES[placeIdx].x, PLACES[placeIdx].y]; tx=wp[0]; ty=wp[1];
     const d = Math.hypot(tx-player.x,ty-player.y); if(d>180){ const k=150/d; tx=player.x+(tx-player.x)*k; ty=player.y+(ty-player.y)*k; } }
   else { const p = PLACES[Math.min(placeIdx,PLACES.length-1)]; tx=p.x+12; ty=p.y-8; if(placeIdx>=PLACES.length-1 && routeIdx>=ROUTES.length){ tx=DEN.x+DEN.w/2; ty=DEN.y+DEN.d-10; } }
   if(!started){ tx = 890 + Math.sin(t*.7)*60; ty = 2200; }
@@ -945,22 +950,36 @@ function updateSparrow(dt){
 
 /* ================= story ================= */
 const tale = $('tale'); let lineTimer=null, taleStep=null;
-$('taleIn').addEventListener('click', () => { if(taleStep) taleStep(); });
+let lineAt=0, lineMin=0, lineMax=0, walkedOn=0, lastPX=null, lastPY=null;
 function speak(place, lines, whisper, done){
+  // the story rides along with you: lines move on by themselves as you keep walking (or after a reading pause). nothing waits for a tap.
   talking = !whisper; tale.classList.toggle('whisper', !!whisper);
   $('place').innerHTML = place ? `<b>${place.k}</b>${esc(place.name)}` : ''; $('place').hidden = !place;
-  let i=0; const step = () => { clearTimeout(lineTimer); if(i>=lines.length){ tale.classList.remove('on'); talking=false; taleStep=null; if(done) done(); return; }
-    $('line').textContent = lines[i++]; tale.classList.add('on'); lineTimer = setTimeout(step, Math.max(3000, lines[i-1].length*55)); };
+  $('taleDots').innerHTML = lines.map(() => '<i></i>').join('');
+  let i=0; const step = () => { clearTimeout(lineTimer);
+    if(i>=lines.length){ tale.classList.remove('on'); talking=false; taleStep=null; if(done) done(); return; }
+    const L = lines[i++], first = i===1;
+    const show = () => { $('line').textContent = L; $('line').classList.remove('swap'); [...$('taleDots').children].forEach((d,k) => d.classList.toggle('on', k===i-1)); };
+    if(first || !tale.classList.contains('on')) show(); else { $('line').classList.add('swap'); setTimeout(show, 300); }
+    tale.classList.add('on');
+    const read = Math.max(3200, L.length*62);
+    lineAt = performance.now(); lineMin = Math.min(2200, read*.5); lineMax = read + (i>=lines.length ? 1200 : 0); walkedOn = 0;
+    lineTimer = setTimeout(step, lineMax); };
   taleStep = step; clearTimeout(lineTimer); step();
 }
+function taleWalk(){ // called every frame: walking a little way moves the story on
+  if(lastPX!==null && taleStep){ walkedOn += Math.hypot(player.x-lastPX, player.y-lastPY);
+    if(walkedOn > 240 && performance.now()-lineAt > lineMin) taleStep(); }
+  lastPX = player.x; lastPY = player.y; }
 function linesFor(i){ const L = PLACES[i].lines.slice(); if(gift0 && i===3) L[1] = `${gift0.f || 'Your friend'} packed these two baskets for you. One is a treat. The other is not.`; return L; }
 function checkPlaces(){
-  if(talking || choiceOpen || placeIdx >= PLACES.length) return;
+  if(choiceOpen || placeIdx >= PLACES.length) return;
   const p = PLACES[placeIdx]; if(Math.hypot(player.x-p.x, player.y-p.y) > 95) return;
   const idx = placeIdx; found.add(idx); updateFound(); chime(); if(idx===1) lungeT = 1;
-  routeIdx = idx+1; wpIdx = 0; setFollow(false);
+  routeIdx = idx+1; wpIdx = 0; const wasFollowing = follow;
   if(idx === PLACES.length-1){ placeIdx = idx+1; updateFound(); setTimeout(() => openChoice(), 500); return; }
-  speak(p, linesFor(idx), false, () => { placeIdx = idx+1; updateFound(); });
+  placeIdx = idx+1; updateFound(); if(wasFollowing) setFollow(true);
+  speak(p, linesFor(idx), false);
 }
 function checkWhispers(){ if(talking) return; WHISPERS.forEach((w,i) => { if(!heard.has(i) && Math.hypot(player.x-w.x,player.y-w.y) < w.r){ heard.add(i); speak(null,[w.text],true); } }); }
 PLACES.forEach(p => { const li = document.createElement('li'); li.textContent = p.k; li.title = p.name; li.setAttribute('aria-label', p.name); $('foundList').appendChild(li); });
@@ -1195,7 +1214,7 @@ $('sound').addEventListener('click', () => { soundOn=!soundOn; try{ if(!ac) init
 let last = performance.now();
 function frame(now){
   const dt=Math.min(.05,(now-last)/1000); last=now; if(!reduce){ t+=dt; }
-  if(started){ updatePlayer(dt); checkPlaces(); checkWhispers(); }
+  if(started){ updatePlayer(dt); checkPlaces(); checkWhispers(); taleWalk(); }
   updateSparrow(dt); updateCursorSparrow(dt);
   walkers.forEach(w => { const s=w.s, len=Math.hypot(s.x1-s.x0,s.y1-s.y0); w.u += w.dir*w.v*dt/len; if(w.u>1){ w.u=1; w.dir=-1; } if(w.u<0){ w.u=0; w.dir=1; } });
   for(let i=steps.length-1;i>=0;i--){ steps[i].age += dt*.8; if(steps[i].age>1) steps.splice(i,1); }

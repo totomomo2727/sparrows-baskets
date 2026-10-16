@@ -7,7 +7,7 @@ A Halloween trick-or-treat for grown-ups, based on the Japanese folktale *Shita-
 ## How it plays
 
 1. **Hear the story.** A cover page with little candy drawings, then a typed retelling of the folktale: the kind old man, the treasure, the greedy wife, the monsters, and the sparrow who still hides two baskets every Halloween.
-2. **Explore.** Walk a small town at night, drawn in wobbly ink on paper, then leave through the north gate into the bamboo woods. Click or tap where you want to walk (or use the arrow keys). The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, or you can let her lead with *Follow the sparrow*.
+2. **Explore.** Walk a small town at night, drawn in wobbly ink on paper, then leave through the north gate into the bamboo woods. Click or tap where you want to walk (or use the arrow keys). The story rides along: each line moves on as you keep walking, so nothing ever makes you stop and tap. The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, or you can let her lead with *Follow the sparrow*.
 3. **Find four places.** The story is told by the crossroads, Lantern Lane, the edge of town, and the sparrow's den deep in the woods. A few hidden corners have their own small surprises.
 4. **Pick.** At the den, two identical baskets wait. One holds a treat. The other holds something you will regret.
    - A treat lights up the whole town with fireworks and a flock of sparrows.
