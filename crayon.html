@@ -620,7 +620,7 @@ body:has(#choice:not([hidden])) #tale, body:has(#result:not([hidden])) #tale{dis
 #copyMsg{background:#f6d23a!important}
 
 /* ===== the title letters wiggle about ===== */
-.cover .name .ch.spin,.cover .name .tl.spin{animation:rise .9s cubic-bezier(.2,.7,.2,1) both var(--d,0s),spinO 3.2s linear calc(1.6s + var(--k,0s)) infinite!important}
+.cover .name .ch.spin,.cover .name .tl.spin{animation:rise .9s cubic-bezier(.2,.7,.2,1) both var(--d,0s),spinO 1.4s linear calc(1.6s + var(--k,0s)) infinite!important}
 .cover .name .ch.rock,.cover .name .tl.rock{animation:rise .9s cubic-bezier(.2,.7,.2,1) both var(--d,0s),rockR 1.6s ease-in-out calc(1.4s + var(--k,0s)) infinite!important;transform-origin:50% 85%}
 .cover .name .ch.swing,.cover .name .tl.swing{animation:rise .9s cubic-bezier(.2,.7,.2,1) both var(--d,0s),swingS 2.2s ease-in-out calc(1.4s + var(--k,0s)) infinite!important;transform-origin:50% 50%}
 .cover .name .ch.hop,.cover .name .tl.hop{animation:rise .9s cubic-bezier(.2,.7,.2,1) both var(--d,0s),hopA 1.8s ease-in-out calc(1.4s + var(--k,0s)) infinite!important}
@@ -630,7 +630,7 @@ body:has(#choice:not([hidden])) #tale, body:has(#result:not([hidden])) #tale{dis
 @keyframes swingS{0%,100%{rotate:-8deg}50%{rotate:8deg}}
 @keyframes hopA{0%,60%,100%{translate:0 0}30%{translate:0 -.12em}}
 @keyframes tiltT{0%,100%{rotate:4deg}50%{rotate:-6deg}}
-.cover .name .or{animation:spinO 5s linear 2s infinite!important}
+.cover .name .or{animation:spinO 2.4s linear 1.6s infinite!important}
 @keyframes spinSeal{0%{rotate:-8deg}50%{rotate:8deg}100%{rotate:-8deg}}
 .swap .tsu .tl{display:inline-block;position:relative}
 @media (prefers-reduced-motion:reduce){.cover .name .ch,.cover .name .tl{animation:none!important}}
@@ -663,6 +663,9 @@ body:has(#choice:not([hidden])) #tale, body:has(#result:not([hidden])) #tale{dis
 #done blockquote{font-family:"Gaegu",cursive;font-size:1.15rem;color:#3a3632;margin:0;max-width:30ch}
 
 .swap .tsu .tl{padding:0!important;margin:0!important}
+
+#prologue .cover .btn:hover,#prologue .cover .btn:focus-visible{background:#f6d23a!important;color:#141414!important}
+#prologue .cover .btn:active,#prologue .cover .btn.pressed{background:#f6d23a!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1463,9 +1466,9 @@ const narrow = innerWidth < 640;
 $('stickers').innerHTML = STICK.map(([id,x,y,r],i,arr,ox=0,oy=0) => (x = narrow ? Math.min(80,Math.max(-2,x)) : x, y = narrow ? (y < 40 ? y - 6 : y + 8) : y, ox = (x < 50 ? -1 : 1)*260, oy = (y < 40 ? -1 : 1)*200, `<div class="sticker in" style="left:${x}%;top:${y}%;rotate:${r}deg;--fx:${ox}px;--fy:${oy}px;--d:${(.5+i*.12).toFixed(2)}s">${candySVG(byId[id])}</div>`)).join('');
 const TSU_EYES = {};
 const NAME_EYES = {};
-const MOVE = c => ({o:' spin',a:' spin'})[c.toLowerCase()]||'';
+let MOVE = c => (c==='R'||c==='a') ? ' spin' : '';
 { let d = .1; const drop = w => [...w].map((c,i) => `<span class="ch${/[A-Z]/.test(c)?' cap':''}${MOVE(c)}" style="--d:${(d += .05).toFixed(2)}s;--k:${(i*.37).toFixed(2)}s">${c}${(NAME_EYES[w]||{})[i]||''}</span>`).join('');
-  const l1 = drop('tRicK'); d += .1; const l1b = drop('oR'); d += .1; const tr = drop('TreAt');
+  const l1 = drop('tRicK'); d += .1; const _m = MOVE; MOVE = () => ''; const l1b = drop('oR'); d += .1; const tr = drop('TreAt'); MOVE = _m;
   $('name').innerHTML = `<span class="l1"><span class="wd">${l1}</span> <span class="wd or"><i class="burst" aria-hidden="true"></i>${l1b}</span></span>
     <span class="swap"><span class="treat"><span class="wd">${tr}</span><svg class="scrib" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true"><path d="M4 32 C70 27 160 36 296 26"/></svg></span>
     <span class="tsu"><span>${[...'tSuZuRa'].map((c,i) => `<span class="tl${i?'':' cap'}${MOVE(c)}" style="--k:${(i*.41).toFixed(2)}s">${c}${TSU_EYES[i]||''}</span>`).join('')}</span><span class="kana">つづら</span></span></span>`; }
