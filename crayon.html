@@ -687,6 +687,14 @@ body{background:#1c1a26!important}
 .bats i:nth-child(3){top:12vh;left:-6vw;animation-duration:17s;animation-delay:6s;scale:.85}
 @keyframes bat{0%{transform:translate(0,0) scaleY(1)}10%{transform:translate(12vw,-2vh) scaleY(.4)}20%{transform:translate(24vw,1vh) scaleY(1)}30%{transform:translate(36vw,-3vh) scaleY(.4)}40%{transform:translate(48vw,0) scaleY(1)}50%{transform:translate(60vw,-2vh) scaleY(.4)}60%{transform:translate(72vw,1vh) scaleY(1)}70%{transform:translate(84vw,-2vh) scaleY(.4)}100%{transform:translate(120vw,-1vh) scaleY(1)}}
 @media (prefers-reduced-motion:reduce){.bats{display:none}}
+
+.bats{z-index:5!important}
+.bats i{width:40px!important;height:18px!important}
+.bats i:nth-child(4){top:8vh;left:-7vw;animation-duration:19s;animation-delay:9s;scale:.6}
+.bats i:nth-child(5){top:30vh;left:-9vw;animation-duration:13s;animation-delay:12s;scale:.9}
+.bats i:nth-child(6){top:20vh;left:-4vw;animation-duration:16s;animation-delay:15s;scale:.55}
+.bats i:nth-child(7){top:6vh;left:-6vw;animation-duration:21s;animation-delay:18s;scale:.75}
+.bats i{background:#f1ead9!important;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -718,7 +726,6 @@ body{background:#1c1a26!important}
   <div class="cover" id="cover">
     <div class="glow" aria-hidden="true"></div>
     <div class="stickers" id="stickers" aria-hidden="true"></div>
-    <div class="bats" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="tategaki" aria-hidden="true"><span class="k">舌切り雀</span><span class="r">Shita-kiri Suzume · a tale from old Japan</span></div>
     <div class="lanterns" aria-hidden="true"><span class="cord"></span><span class="lan" style="--i:0"><i>お</i></span><span class="lan" style="--i:1"><i>か</i></span><span class="lan" style="--i:2"><i>し</i></span><span class="lan" style="--i:3"><i>か</i></span><span class="lan" style="--i:4"><i>い</i></span><span class="lan" style="--i:5"><i>た</i></span><span class="lan" style="--i:6"><i>ず</i></span><span class="lan" style="--i:7"><i>ら</i></span></div>
     <div class="plaque-wrap"><span class="chain l"></span><span class="chain r"></span>
@@ -737,6 +744,7 @@ body{background:#1c1a26!important}
   <div class="poem" id="poem" aria-live="polite" hidden></div>
   <p class="nudge" id="nudge" hidden><i></i><span id="nudgeText">Click to continue</span></p>
 </section>
+<div class="bats" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <div class="walkhint" id="walkhint" hidden><i></i><span id="walkText">Click anywhere to walk</span></div>
 <svg id="cursorSparrow" class="rough" viewBox="0 0 60 44" aria-hidden="true"><g stroke="#241b17" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
   <path d="M18 26 L3 19 L4.5 23.5 L17 30Z" fill="#5e3a26"/><path d="M16 27 C17 18 27 13 35 13 C38 7.5 45 6 49.5 9.5 C51.5 11 52.6 13 52.4 15.6 C52 22 47.5 27.5 41 31 C34 34.6 23 35 17.5 31 C16.4 30 16 28.6 16 27Z" fill="#a3683f"/><path d="M21 31.5 C28 34 37 33 42 29.5 C45 27 46 23.5 45.5 21.5 C39 26.5 29 29.5 21 31.5Z" fill="#eadcc4" stroke="none"/><path d="M35.5 13.5 C38.5 7.8 45 6.2 49.5 9.6 C51.2 10.9 52.2 12.6 52.4 14.6 C47 12.6 41 12.8 35.5 15.5Z" fill="#8b3d20" stroke="none"/>
@@ -1023,7 +1031,7 @@ function toneFill(c){ if(_tc.has('f'+c)) return _tc.get('f'+c); const p=parseCol
   if(p){ out = (c===INK) ? '#f1ead9' : p[3] < .5 ? 'rgba(0,0,0,0)' : '#1c1a26'; }
   _tc.set('f'+c,out); return out; }
 function toneStroke(c){ if(_tc.has('s'+c)) return _tc.get('s'+c); const p=parseCol(c); let out=c;
-  if(p){ const lum=.3*p[0]+.59*p[1]+.11*p[2]; out = (lum>170 || p[3]<.3) ? 'rgba(0,0,0,0)' : '#f1ead9'; }
+  if(p){ const lum=.3*p[0]+.59*p[1]+.11*p[2]; out = (lum>170 || p[3]<.3) ? 'rgba(0,0,0,0)' : 'rgba(232,224,206,.82)'; }
   _tc.set('s'+c,out); return out; }
 const _P=CanvasRenderingContext2D.prototype, _F=Object.getOwnPropertyDescriptor(_P,'fillStyle'), _S=Object.getOwnPropertyDescriptor(_P,'strokeStyle');
 let RAWCOL = false;   // true while drawing the hero and the sparrow in their own colours
@@ -1041,14 +1049,14 @@ const INK = '#241b17';
 let jseed = 1, jn = 0;
 const setSeed = s => { jseed = s; jn = 0; };
 function h2(){ jn++; const s = Math.sin(jseed*91.37 + jn*12.9898)*43758.5453; return s - Math.floor(s); }
-const jj = (a,b,amp=1.1) => (h2()-.5)*2*amp*2.6;
+const jj = (a,b,amp=1.1) => (h2()-.5)*2*amp*1.7;
 function line(x1,y1,x2,y2,w=1.7,col=INK){   // a felt pen held loosely: drifting, trembling, never quite straight
   if(w < .95) return;
-  const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy)||1, ux=dx/L, uy=dy/L, nx=-uy, ny=ux, o=Math.min(4,L*.07);
-  const ax=x1-ux*o*h2()+jj(0,0,1.4), ay=y1-uy*o*h2()+jj(0,0,1.4), bx=x2+ux*o*h2()+jj(0,0,1.4), by=y2+uy*o*h2()+jj(0,0,1.4);
-  const n=Math.max(3,Math.min(18,(L/7)|0)), bow=(h2()-.5)*Math.min(9,L*.09), ph=h2()*6, fr=1.5+h2()*2;
-  ctx.strokeStyle=col; ctx.lineWidth=Math.max(1.5,Math.min(2.6,w*1.25))*(.85+h2()*.35); ctx.beginPath(); ctx.moveTo(ax,ay);
-  for(let i=1;i<=n;i++){ const t_=i/n, k=Math.sin(t_*Math.PI)*bow + Math.sin(t_*fr*Math.PI+ph)*Math.min(1.6,L*.02) + (h2()-.5)*.9;
+  const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy)||1, ux=dx/L, uy=dy/L, nx=-uy, ny=ux, o=Math.min(2.4,L*.045);
+  const ax=x1-ux*o*h2()+jj(0,0,.7), ay=y1-uy*o*h2()+jj(0,0,.7), bx=x2+ux*o*h2()+jj(0,0,.7), by=y2+uy*o*h2()+jj(0,0,.7);
+  const n=Math.max(3,Math.min(18,(L/7)|0)), bow=(h2()-.5)*Math.min(5,L*.05), ph=h2()*6, fr=1.5+h2()*2;
+  ctx.strokeStyle=col; ctx.lineWidth=Math.max(1.2,Math.min(2.1,w*1.05))*(.85+h2()*.3); ctx.beginPath(); ctx.moveTo(ax,ay);
+  for(let i=1;i<=n;i++){ const t_=i/n, k=Math.sin(t_*Math.PI)*bow + Math.sin(t_*fr*Math.PI+ph)*Math.min(.9,L*.012) + (h2()-.5)*.35;
     ctx.lineTo(ax+(bx-ax)*t_+nx*k, ay+(by-ay)*t_+ny*k); }
   ctx.stroke();
 }
