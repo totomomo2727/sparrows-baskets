@@ -6,8 +6,8 @@ A Halloween trick-or-treat for grown-ups, based on the Japanese folktale *Shita-
 
 ## How it plays
 
-1. **Explore.** The town starts under night mist. Click or tap where you want to walk (or use the arrow keys). The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, and you can let her lead with *Follow the sparrow*.
-2. **Find the five places.** The story is told by the places you reach: the edge of town, the crossroads, Lantern Lane, the bamboo grove, and the Sparrow's Inn. A few hidden corners have their own small surprises.
+1. **Explore.** The page opens straight into a small town at night, drawn in wobbly ink on paper. Click or tap where you want to walk (or use the arrow keys). The mist lifts and the lanterns wake wherever you go. A sparrow flies ahead to show the way, or you can let her lead with *Follow the sparrow*.
+2. **Find three places.** The story is told by the crossroads, Lantern Lane, and the Sparrow's Inn. A few hidden corners have their own small surprises.
 3. **Pick.** At the inn, two identical baskets wait. One holds a treat. The other holds something you will regret.
    - A treat lights up the whole town with fireworks and a flock of sparrows.
    - A trick kills every lantern, fills the screen with green stink and flies, and sends a laughing umbrella yokai to gloat.
@@ -19,7 +19,7 @@ Treats are real pan-Asian candy: White Rabbit, Hi-Chew, Botan Rice Candy, Koala'
 
 It's a single static `index.html` with no build step, no backend, and no dependencies besides Google Fonts.
 
-- The town is drawn on a `<canvas>` from code: buildings lean slightly with the camera for depth, and a low-resolution fog map tracks what you have uncovered.
+- The town is drawn on a `<canvas>` from code with a deliberately unsteady hand: every line wobbles and overshoots, fills sit slightly off their outlines, the ink redraws a few times a second like hand-drawn animation, and a paper grain sits over everything. A low-resolution fog map tracks what you have uncovered.
 - A gift is encoded into the link's hash (`#b.<base64url JSON>`), so nothing is stored anywhere. Share links are built from the page's own address, so they work wherever you host it.
 - Sound (wind chimes, rain, a low hum) is generated with Web Audio and stays off until you turn it on.
 - Motion is reduced when the visitor has `prefers-reduced-motion` turned on.
@@ -43,7 +43,7 @@ For the link preview image to show up in iMessage, WhatsApp, and similar apps, c
 ## Customizing
 
 - **Candy:** edit the `TREATS` and `TRICKS` arrays near the top of the script. Each entry has a name, origin, wrapper colors, a kanji for the wrapper, and a tasting note.
-- **Places and story lines:** edit `PLACES`, `ROUTES` (the sparrow's path between places), and `WHISPERS` (hidden corners). The town is 3600 by 3600 units.
+- **Places and story lines:** edit `PLACES`, `ROUTES` (the sparrow's path between places), and `WHISPERS` (hidden corners). The town is 1800 by 1800 units.
 
 ## Credits
 
