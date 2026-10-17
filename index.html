@@ -17,6 +17,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Trick or Tsuzura</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<title>Trick or Tsuzura</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Shippori+Mincho:wght@500&family=Zen+Kaku+Gothic+New:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Gaegu:wght@400;700&family=Yuji+Syuku&display=swap">
@@ -446,6 +448,39 @@ legend{padding:0;margin:0 0 1rem;font-size:clamp(1.25rem,1.1rem + .8vw,1.7rem);f
 /* keep the result header readable: bats fly off, prankster tucks into the corner on phones */
 body:has(#result:not([hidden])) .bats{opacity:0;transition:opacity .4s}
 @media (max-width:600px){.prankster{width:24vw;right:1vw;bottom:-3vh}.prankster .bubble{font-size:1.05rem;left:-95%;top:2%}}
+
+/* ===== tying the baskets: both candies hop in, the lids shut, then the link appears ===== */
+#packer.tied #packForm > :not(#done), #packer.tied .pack-in > h2, #packer.tied .pack-in > p{display:none!important}
+#packer.tied .done{display:grid;justify-items:center;text-align:center;gap:14px;padding:28px 18px 10px;margin:0 auto;max-width:34rem;border-top:0}
+#packer.tied .done h3{font-family:"Gaegu",cursive;font-weight:700;font-size:clamp(2.2rem,1.6rem + 2.4vw,3.4rem);margin:0;color:var(--paper)}
+#tieAnim{display:flex;justify-content:center;align-items:flex-end;gap:60px;height:220px;margin:4px 0 6px}
+#tieAnim .tb{position:relative;width:130px}
+#tieAnim .tb svg{width:100%;display:block;overflow:visible}
+#tieAnim .tc{position:absolute;left:50%;top:-60px;width:78px;translate:-50% 0;z-index:2;opacity:0}
+#tieAnim .tc svg{width:100%;height:auto;display:block}
+#tieAnim .lid{transform-box:fill-box;transform-origin:10% 100%}
+.done.play #tieAnim .tc{animation:hopIn2 1.5s cubic-bezier(.3,.2,.4,1) .25s both}
+.done.play #tieAnim .t1 .tc{animation-delay:.7s}
+@keyframes hopIn2{0%{opacity:0;transform:translate(0,-10px) scale(.4) rotate(-20deg)}20%{opacity:1;transform:translate(0,-150px) scale(1.2) rotate(12deg)}55%{opacity:1;transform:translate(0,-150px) scale(1.15) rotate(-8deg)}85%{opacity:1;transform:translate(0,30px) scale(.7)}100%{opacity:0;transform:translate(0,55px) scale(.4)}}
+.done.play #tieAnim .lid{animation:lidShut2 1.7s ease-out both}
+.done.play #tieAnim .t1 .lid{animation-delay:.45s}
+@keyframes lidShut2{0%,55%{transform:translate(-8px,-36px) rotate(-32deg)}72%{transform:translateY(4px)}86%{transform:translateY(-4px)}100%{transform:none}}
+.done.play #tieAnim .tb{animation:squash .5s 1.25s ease-in-out both}
+.done.play #tieAnim .t1{animation-delay:1.7s}
+@keyframes squash{0%,100%{transform:none}35%{transform:scale(1.12,.86)}70%{transform:scale(.94,1.06)}}
+#tieAnim .tb::after{content:'✦ ✧ ✦';position:absolute;left:50%;top:-30px;translate:-50% 0;font-size:1.3rem;color:#f29a2e;opacity:0;white-space:nowrap;letter-spacing:.4em}
+.done.play #tieAnim .tb::after{animation:tieSpark .9s 1.35s ease-out both}
+.done.play #tieAnim .t1::after{animation-delay:1.8s}
+@keyframes tieSpark{0%{opacity:0;transform:translateY(10px) scale(.6)}40%{opacity:1}100%{opacity:0;transform:translateY(-26px) scale(1.2)}}
+@keyframes tieRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.done.play h3{animation:tieRise .5s 1.9s both}
+.done.play blockquote{animation:tieRise .5s 2.1s both}
+#packer.tied #shareUrl{display:none}
+#packer.tied .done .acts{display:grid;justify-items:center;gap:10px}
+.done.play .acts{animation:tieRise .5s 2.3s both}
+#packer.tied #copyMsg{font-size:1.3rem;padding:.55em 1.9em .65em;background:#f6d23a;color:#1b1613}
+#packer.tied #done blockquote{font-family:"Gaegu",cursive;font-size:1.15rem;margin:0;max-width:30ch;border-left:0;padding:0}
+@media (prefers-reduced-motion:reduce){.done.play *,.done.play *::after{animation:none!important}#tieAnim .tc{display:none}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -532,13 +567,15 @@ body:has(#result:not([hidden])) .bats{opacity:0;transition:opacity .4s}
       <div class="tie"><button class="btn" type="submit">Tie the baskets</button>
         <span class="fine">This makes a link. The gift lives inside the link, so nothing is stored anywhere.</span></div>
       <div class="done" id="done" hidden>
-        <h3>The baskets are tied.</h3>
+        <div id="tieAnim" aria-hidden="true"><div class="tb t0"><div class="tc" id="tieC0"></div><svg class="rough" viewBox="0 0 140 120"></svg></div><div class="tb t1"><div class="tc" id="tieC1"></div><svg class="rough" viewBox="0 0 140 120"></svg></div></div>
+        <h3>The baskets are tied!</h3>
         <blockquote id="shareMsg"></blockquote>
         <label for="shareUrl" class="sr">Link</label><input id="shareUrl" readonly>
         <div class="acts">
           <button class="btn" type="button" id="copyMsg">Copy message and link</button>
           <button class="link" type="button" id="copyLink">Copy link only</button>
           <button class="link" type="button" id="preview">Try it as your friend</button>
+          <button class="link" type="button" id="editGift">Change the baskets</button>
         </div>
       </div>
     </form>
@@ -1350,12 +1387,17 @@ buildGrid($('treats'), TREATS, 'treat', 'wr'); buildGrid($('tricks'), TRICKS, 't
 function syncNotes(){ const f=$('packForm'); $('treatNote').textContent = byId[f.treat.value].note; $('trickNote').textContent = byId[f.trick.value].note; }
 $('packForm').addEventListener('change', syncNotes); syncNotes();
 $('note').addEventListener('input', e => $('noteCount').textContent = e.target.value.length);
-function openPacker(){ $('result').hidden=true; $('choice').hidden=true; $('packer').hidden=false; $('packer').scrollTop=0; }
+function openPacker(){ $('packer').classList.remove('tied'); $('done').hidden=true; $('result').hidden=true; $('choice').hidden=true; $('packer').hidden=false; $('packer').scrollTop=0; }
 let lastGift=null;
 $('packForm').addEventListener('submit', e => { e.preventDefault(); const f=e.target;
   lastGift = {t:f.treat.value, k:f.trick.value, f:f.from.value.trim().slice(0,24), o:f.to.value.trim().slice(0,24), n:f.note.value.trim().slice(0,90)};
   const url = shareUrl(enc(lastGift)), msg = `${lastGift.o ? lastGift.o + ', I' : 'I'} left you two baskets at the sparrow's den. Trick or tsuzura: one is sweets, one is truly disgusting, and you only get to open one.`;
-  $('shareMsg').textContent=msg; $('shareUrl').value=url; $('done').dataset.msg = msg+' '+url; $('done').hidden=false; $('done').scrollIntoView({block:'nearest', behavior:reduce?'auto':'smooth'}); chime(); });
+  $('shareMsg').textContent=msg; $('shareUrl').value=url; $('done').dataset.msg = msg+' '+url;
+  $('tieC0').innerHTML = candySVG(byId[lastGift.t]); $('tieC1').innerHTML = candySVG(byId[lastGift.k]);
+  document.querySelectorAll('#tieAnim .tb > svg').forEach(v => v.innerHTML = BASKET);
+  const d=$('done'); d.classList.remove('play'); $('packer').classList.add('tied'); d.hidden=false; void d.offsetWidth; d.classList.add('play'); $('packer').scrollTop=0;
+  if(!reduce) [700,1150].forEach(ms => setTimeout(() => { pop(); chirp(); }, ms)); setTimeout(() => chime(), reduce?0:1800); });
+$('done').addEventListener('click', e => { if(e.target.id==='editGift'){ $('packer').classList.remove('tied'); $('done').hidden=true; } });
 async function copy(text, btn, fb){ const o=btn.textContent; try{ await navigator.clipboard.writeText(text); btn.textContent='Copied'; }catch(err){ if(fb){ fb.focus(); fb.select(); } btn.textContent='Selected. Press Ctrl+C or ⌘C'; } setTimeout(() => btn.textContent=o, 2200); }
 $('copyMsg').addEventListener('click', e => copy($('done').dataset.msg, e.currentTarget, $('shareUrl')));
 $('copyLink').addEventListener('click', e => copy($('shareUrl').value, e.currentTarget, $('shareUrl')));
