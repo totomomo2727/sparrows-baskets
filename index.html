@@ -19,6 +19,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Trick or Tsuzura</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<title>Trick or Tsuzura</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Shippori+Mincho:wght@500&family=Zen+Kaku+Gothic+New:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Gaegu:wght@400;700&family=Yuji+Syuku&display=swap">
@@ -451,9 +453,9 @@ body:has(#result:not([hidden])) .bats{opacity:0;transition:opacity .4s}
 
 /* ===== tying the baskets: both candies hop in, the lids shut, then the link appears ===== */
 #packer.tied #packForm > :not(#done), #packer.tied .pack-in > h2, #packer.tied .pack-in > p{display:none!important}
-#packer.tied .done{display:grid;justify-items:center;text-align:center;gap:14px;padding:28px 18px 10px;margin:0 auto;max-width:34rem;border-top:0}
+#packer.tied .done{display:grid;justify-items:center;text-align:center;gap:12px;padding:12px 18px 10px;margin:0 auto;max-width:34rem;border-top:0}
 #packer.tied .done h3{font-family:"Gaegu",cursive;font-weight:700;font-size:clamp(2.2rem,1.6rem + 2.4vw,3.4rem);margin:0;color:var(--paper)}
-#tieAnim{display:flex;justify-content:center;align-items:flex-end;gap:60px;height:220px;margin:4px 0 6px}
+#tieAnim{display:flex;justify-content:center;align-items:flex-end;gap:60px;height:180px;margin:0 0 4px}
 #tieAnim .tb{position:relative;width:130px}
 #tieAnim .tb svg{width:100%;display:block;overflow:visible}
 #tieAnim .tc{position:absolute;left:50%;top:-60px;width:78px;translate:-50% 0;z-index:2;opacity:0}
@@ -474,12 +476,14 @@ body:has(#result:not([hidden])) .bats{opacity:0;transition:opacity .4s}
 @keyframes tieSpark{0%{opacity:0;transform:translateY(10px) scale(.6)}40%{opacity:1}100%{opacity:0;transform:translateY(-26px) scale(1.2)}}
 @keyframes tieRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .done.play h3{animation:tieRise .5s 1.9s both}
-.done.play blockquote{animation:tieRise .5s 2.1s both}
+.done.play blockquote{animation:notePop .6s cubic-bezier(.3,1.6,.5,1) 2.1s both}
+@keyframes notePop{0%{opacity:0;transform:scale(.4) rotate(-8deg)}100%{opacity:1;transform:rotate(-1.5deg)}}
 #packer.tied #shareUrl{display:none}
 #packer.tied .done .acts{display:grid;justify-items:center;gap:10px}
-.done.play .acts{animation:tieRise .5s 2.3s both}
+.done.play .acts{animation:ctaPop .55s cubic-bezier(.3,1.5,.5,1) 3.1s both}
+@keyframes ctaPop{0%{opacity:0;transform:translateY(16px) scale(.85)}100%{opacity:1;transform:none}}
 #packer.tied #copyMsg{font-size:1.3rem;padding:.55em 1.9em .65em;background:#f6d23a;color:#1b1613}
-#packer.tied #done blockquote{font-family:"Gaegu",cursive;font-size:1.15rem;margin:0;max-width:30ch;border-left:0;padding:0}
+#packer.tied #done blockquote{font-family:"Gaegu",cursive;font-size:1.25rem;line-height:1.45;margin:6px 0 10px;max-width:30ch;border:2.5px solid var(--ink);padding:16px 20px;background:#f4ecdc;color:#241b17;border-radius:255px 15px 225px 15px/15px 225px 15px 255px;box-shadow:4px 5px 0 rgba(0,0,0,.35)}
 @media (prefers-reduced-motion:reduce){.done.play *,.done.play *::after{animation:none!important}#tieAnim .tc{display:none}}
 </style>
 
@@ -728,6 +732,8 @@ for(let gy=0; gy<GR; gy++) for(let gx=0; gx<GC; gx++){
     markRect({x:gx*C,y:gy*C,w:w*C,h:h*C}); break;
   }
 }
+// lantern lane: the row just south of it stays one storey so the lane reads from above
+buildings.forEach(b => { if(b.y > 1420 && b.y < 1500 && b.x+b.w > 950 && b.x < 1620){ b.h = Math.min(b.h, 62); b.gf = Math.min(b.gf, 40); b.vsign = null; b.roofSign = null; } });
 // the woods
 const trees = [], bamboo = [], ferns = [];
 for(let i=0;i<420;i++){ const x=rnd(70,WW-70), y=rnd(30,TOWN_Y-30); const dp = distToPath(x,y);
@@ -890,6 +896,11 @@ function roof(X,Y,w,d,col){
   return {ry, rl, rr};
 }
 function building(b){
+  const hides = player.x > b.x-18 && player.x < b.x+b.w+18 && player.y < b.y+b.d && player.y > b.y-b.h-30;
+  b.fade = (b.fade||0) + ((hides?1:0) - (b.fade||0))*.18;
+  if(b.fade > .02){ ctx.save(); ctx.globalAlpha = 1 - .68*b.fade; buildingBody(b); ctx.restore(); } else buildingBody(b);
+}
+function buildingBody(b){
   const {x:X,y:Y,w,d,h} = b, dx = ((X+w/2) - cam.x) * .13 * (h/200), L = lightAt(X+w/2, Y+d, b.seed), lit = L > .5;
   const q = k => { const v = Math.sin(b.seed*12.9898 + k*78.233)*43758.5453; return v - Math.floor(v); };
   const tiles = q(1) < .35, glass = !tiles && q(2) < .22 && w > 90, lattice = q(3) < .3 && b.gf > 46, balc = b.h > 110 && q(4) < .7, neon = q(5) < .45;
@@ -1104,7 +1115,7 @@ function drawWorld(){
   if(vis(380,520,70)) list.push([520, foxShrine]); if(vis(560,240,50)) list.push([240, tanukiDrum]);
   if(y0 < 1850 && y1 > 1650){ jizo.forEach((j,i) => list.push([j.y, () => jizoFig(j,i)])); lilies.forEach(l => list.push([l.y, () => lily(l)])); list.push([1832, kasa, 14]); }
   if(y0 < 1420 && y1 > 1300) list.push([1345, () => { for(let i=0;i<laneLanterns.length-1;i++) line(laneLanterns[i].x,1380-38,laneLanterns[i+1].x,1380-38,1);
-    laneLanterns.forEach(l => l.obake ? obake(l.x,1380-24) : chochin(l.x,1380-24,9,l.x,null)); }]);
+    laneLanterns.forEach((l,i) => l.obake ? obake(l.x,1380-24) : chochin(l.x,1380-24,12,l.x,[...'ちょうちん'][i%5],true)); }]);
   walkers.forEach((w,i) => { const s=w.s; list.push([s.y0+(s.y1-s.y0)*w.u, () => walker(w), 7000+i]); });
   list.push([player.y, drawPlayer, 9001], [sparrow.y, drawSparrow, 9002]);
   list.sort((a,b) => a[0]-b[0]); list.forEach(([y,f,sd]) => { setSeed(sd ?? y); f(); });
@@ -1396,7 +1407,7 @@ $('packForm').addEventListener('submit', e => { e.preventDefault(); const f=e.ta
   $('tieC0').innerHTML = candySVG(byId[lastGift.t]); $('tieC1').innerHTML = candySVG(byId[lastGift.k]);
   document.querySelectorAll('#tieAnim .tb > svg').forEach(v => v.innerHTML = BASKET);
   const d=$('done'); d.classList.remove('play'); $('packer').classList.add('tied'); d.hidden=false; void d.offsetWidth; d.classList.add('play'); $('packer').scrollTop=0;
-  if(!reduce) [700,1150].forEach(ms => setTimeout(() => { pop(); chirp(); }, ms)); setTimeout(() => chime(), reduce?0:1800); });
+  if(!reduce) [700,1150].forEach(ms => setTimeout(() => { pop(); chirp(); }, ms)); setTimeout(() => chime(), reduce?0:2200); if(!reduce) setTimeout(() => pop(), 3150); });
 $('done').addEventListener('click', e => { if(e.target.id==='editGift'){ $('packer').classList.remove('tied'); $('done').hidden=true; } });
 async function copy(text, btn, fb){ const o=btn.textContent; try{ await navigator.clipboard.writeText(text); btn.textContent='Copied'; }catch(err){ if(fb){ fb.focus(); fb.select(); } btn.textContent='Selected. Press Ctrl+C or ⌘C'; } setTimeout(() => btn.textContent=o, 2200); }
 $('copyMsg').addEventListener('click', e => copy($('done').dataset.msg, e.currentTarget, $('shareUrl')));
